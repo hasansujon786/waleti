@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "278569244308",
+    "firebase_url": "https://waleti-fef1c-default-rtdb.firebaseio.com",
+    "project_id": "waleti-fef1c",
+    "storage_bucket": "waleti-fef1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278569244308:android:60171f939b0d1136de0681",
+        "android_client_info": {
+          "package_name": "com.example.flutter_expense_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278569244308-l6kt543h2o9qouc3km5ht6ki6ajdg4en.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKIk3nkWZAtRdbxYqwzJzaBHZrKCm0jSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278569244308-l6kt543h2o9qouc3km5ht6ki6ajdg4en.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "278569244308-4m6tthd30sqit4p0f788k8mr1mecpc23.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hasanmahmud.waleti.waleti"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278569244308:android:46932cccb3a4aabdde0681",
+        "android_client_info": {
+          "package_name": "com.hasanmahmud.waleti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278569244308-l6kt543h2o9qouc3km5ht6ki6ajdg4en.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKIk3nkWZAtRdbxYqwzJzaBHZrKCm0jSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278569244308-l6kt543h2o9qouc3km5ht6ki6ajdg4en.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "278569244308-4m6tthd30sqit4p0f788k8mr1mecpc23.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hasanmahmud.waleti.waleti"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
