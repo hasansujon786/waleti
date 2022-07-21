@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'configs/configs.dart';
+import 'pages/pages.dart';
+import 'services/services.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -12,6 +15,11 @@ class App extends StatelessWidget {
       // debugShowMaterialGrid: true,
       title: Constants.appName,
       theme: AppTheme.light,
+      home: AppAuthWrapper(
+        FirebaseAuth.instance,
+        loginView: const LoginView(),
+        authView: const RootNavigation(),
+      ),
       routes: appRoutes,
     );
   }

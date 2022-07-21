@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../dummy/user/user.dart';
-import '../../../services/firebase/fbase.dart';
+import '../../../services/services.dart';
 import '../configs/configs.dart';
 import '../shared/ui/ui.dart';
-import 'home/home.dart';
+import 'pages.dart';
 
 class RootNavigation extends StatefulWidget {
   const RootNavigation({Key? key}) : super(key: key);
@@ -19,8 +19,8 @@ class _RootNavigationState extends State<RootNavigation> {
   static const List<Widget> _screens = <Widget>[
     HomeView(title: Constants.appName),
     TestView(title: 'one'),
-    TestView(title: 'two'),
     UsersView(title: 'Users'),
+    SettingView(),
   ];
 
   int _currentViewIndex = 0;
