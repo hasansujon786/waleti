@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../services.dart';
+
 final _googleSignIn = GoogleSignIn();
 final _auth = FirebaseAuth.instance;
 
@@ -13,13 +15,14 @@ class AppAuth {
       }
 
       final googleAuth = await signedInUser.authentication;
-      _auth.signInWithCredential(GoogleAuthProvider.credential(
+      final userCredential = await _auth.signInWithCredential(GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       ));
+      createIfNewUser(userCredential.user?.uid);
       return signedInUser;
     } catch (error) {
-      print(error.toString());
+      print(error);
     }
     return null;
   }
@@ -29,7 +32,7 @@ class AppAuth {
     _auth.signOut();
   }
 
-  User? get user {
+  static User? get user {
     return _auth.currentUser;
   }
 }

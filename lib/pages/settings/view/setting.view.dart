@@ -2,26 +2,41 @@ import 'package:flutter/material.dart';
 
 import '../../../services/services.dart';
 
-class SettingView extends StatefulWidget {
+class SettingView extends StatelessWidget {
   const SettingView({Key? key}) : super(key: key);
 
-  static const routeName = '/settings';
-  @override
-  State<SettingView> createState() => _SettingViewState();
-}
-
-class _SettingViewState extends State<SettingView> {
   @override
   Widget build(BuildContext context) {
+    final user = AppAuth.user;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SettingView'),
+        title: const Text('Settings'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => AppAuth.signOut(),
-          child: const Text('Sign out'),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(user?.photoURL ?? ''),
+                ),
+                const SizedBox(height: 2),
+                Text(user?.displayName ?? ''),
+                const SizedBox(height: 2),
+                Text(user?.email ?? ''),
+                const SizedBox(height: 2),
+                Text(user?.uid ?? ''),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () => AppAuth.signOut(),
+                  child: const Text('Sign out'),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

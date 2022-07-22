@@ -10,7 +10,6 @@ import 'pages.dart';
 class RootNavigation extends StatefulWidget {
   const RootNavigation({Key? key}) : super(key: key);
 
-  static const routeName = '/';
   @override
   State<RootNavigation> createState() => _RootNavigationState();
 }
@@ -28,7 +27,8 @@ class _RootNavigationState extends State<RootNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: _currentViewIndex == 0 ? Colors.white : null,
-        body: _screens.elementAt(_currentViewIndex),
+        // body: _screens.elementAt(_currentViewIndex),
+        body: IndexedStack(index: _currentViewIndex, children: _screens),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Consumer(
           builder: (context, ref, child) => FloatingActionButton(
