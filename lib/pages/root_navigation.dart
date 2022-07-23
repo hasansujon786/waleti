@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../dummy/user/user.dart';
-import '../../../services/services.dart';
 import '../configs/configs.dart';
+import '../controllers/controllers.dart';
 import '../shared/ui/ui.dart';
 import 'pages.dart';
 
@@ -18,7 +17,7 @@ class _RootNavigationState extends State<RootNavigation> {
   static const List<Widget> _screens = <Widget>[
     HomeView(title: Constants.appName),
     TestView(title: 'one'),
-    UsersView(title: 'Users'),
+    TestView(title: 'two'),
     SettingView(),
   ];
 
@@ -34,8 +33,7 @@ class _RootNavigationState extends State<RootNavigation> {
           builder: (context, ref, child) => FloatingActionButton(
             onPressed: () {
               NewTransactionInputModal.open(context, (newTransaction) {
-                // ref.read(transactionsProvider.notifier).addNewTransaction(newTransaction);
-                createTransaction(newTransaction);
+                ref.read(transactionListControllerProvider.notifier).addItem(item: newTransaction);
                 Navigator.pop(context);
               });
             },

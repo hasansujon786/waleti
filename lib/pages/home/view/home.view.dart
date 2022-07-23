@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../configs/configs.dart';
+import '../../../controllers/controllers.dart';
 import '../../../models/models.dart';
 import '../../../pages/pages.dart';
-import '../../../controllers/controllers.dart';
-import '../../../services/firebase/fbase.dart';
 import '../widgets/widgets.dart';
 
 const Color _bg = Colors.blue;
@@ -52,7 +51,7 @@ class HomeView extends ConsumerWidget {
 
   Widget listItems() {
     return StreamBuilder(
-      stream: readTransactions(),
+      stream: readTransactionsStream(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) return buildSliverBoxCenter(Text('Error: ${snapshot.error.toString()}'));
         if (snapshot.connectionState == ConnectionState.waiting) return buildSliverBoxCenter(const Text('Loading...'));

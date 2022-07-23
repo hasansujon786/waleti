@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'configs/configs.dart';
 import 'pages/pages.dart';
-import 'services/services.dart';
+import 'shared/ui/ui.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

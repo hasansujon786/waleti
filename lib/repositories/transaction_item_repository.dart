@@ -32,15 +32,20 @@ class TransactionItemRepository implements BaseTransactionItemRepository {
   }
 
   @override
-  Future<String> createItem({required String userId, required MyTransaction item}) {
-    // TODO: implement createItem
-    throw UnimplementedError();
+  Future<String> createItem({required String userId, required MyTransaction item}) async {
+    try {
+      final docRef = _read(firebaseFirestoreProvider).transactionsRef(userId).doc();
+      item.id = docRef.id;
+      docRef.set(item.toJson());
+      return docRef.id;
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
+    }
   }
 
   @override
-  Future<void> deleteItem({required String userId, required String itemId}) {
-    // TODO: implement deleteItem
-    throw UnimplementedError();
+  Future<void> deleteItem({required String userId, required String itemId}) async {
+    await _read(firebaseFirestoreProvider).transactionsRef(userId).doc(itemId).delete();
   }
 
   @override
