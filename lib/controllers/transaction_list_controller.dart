@@ -7,18 +7,18 @@ import '../repositories/repositories.dart';
 import 'controllers.dart';
 
 final transactionListControllerProvider =
-    StateNotifierProvider<TransactionItemController, AsyncValue<List<MyTransaction>>>(
+    StateNotifierProvider<TransactionListController, AsyncValue<List<MyTransaction>>>(
   (ref) {
     final user = ref.watch(authControllerProvider);
-    return TransactionItemController(ref.read, user?.uid);
+    return TransactionListController(ref.read, user?.uid);
   },
 );
 
-class TransactionItemController extends StateNotifier<AsyncValue<List<MyTransaction>>> {
+class TransactionListController extends StateNotifier<AsyncValue<List<MyTransaction>>> {
   final Reader _read;
   final String? _userId;
 
-  TransactionItemController(this._read, this._userId) : super(const AsyncValue.loading()) {
+  TransactionListController(this._read, this._userId) : super(const AsyncValue.loading()) {
     if (_userId != null) {
       retrieveItems();
     }
@@ -27,7 +27,7 @@ class TransactionItemController extends StateNotifier<AsyncValue<List<MyTransact
   Future<void> retrieveItems({bool isRefreshing = false}) async {
     if (isRefreshing) state = const AsyncValue.loading();
     try {
-      final items = await _read(transactionItemRepositoryProvider).retrieveItems(userId: _userId!);
+      final items = await _read(transactionListRepositoryProvider).retrieveItems(userId: _userId!);
       if (mounted) {
         state = AsyncValue.data(items);
       }
@@ -38,7 +38,7 @@ class TransactionItemController extends StateNotifier<AsyncValue<List<MyTransact
 
   Future<void> addItem({required MyTransaction item}) async {
     try {
-      final itemId = await _read(transactionItemRepositoryProvider).createItem(
+      final itemId = await _read(transactionListRepositoryProvider).createItem(
         userId: _userId!,
         item: item,
       );
@@ -53,9 +53,24 @@ class TransactionItemController extends StateNotifier<AsyncValue<List<MyTransact
 
   Future<void> deleteItem({required String itemId}) async {
     try {
-      await _read(transactionItemRepositoryProvider).deleteItem(userId: _userId!, itemId: itemId);
+      await _read(transactionListRepositoryProvider).deleteItem(userId: _userId!, itemId: itemId);
 
       state.whenData((items) => state = AsyncValue.data(items..removeWhere((item) => item.id == itemId)));
+    } on CustomException catch (e) {
+      print(e);
+      // _read(itemListExceptionProvider).state = e;
+    }
+  }
+
+  Future<void> updateItem({required MyTransaction updatedItem}) async {
+    try {
+      await _read(transactionListRepositoryProvider).updateItem(userId: _userId!, item: updatedItem);
+      state.whenData((items) {
+        state = AsyncValue.data([
+          for (final item in items)
+            if (item.id == updatedItem.id) updatedItem else item
+        ]);
+      });
     } on CustomException catch (e) {
       print(e);
       // _read(itemListExceptionProvider).state = e;

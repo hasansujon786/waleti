@@ -6,20 +6,20 @@ import '../models/models.dart';
 import '../providers/general_providers.dart';
 import 'repositories.dart';
 
-abstract class BaseTransactionItemRepository {
+abstract class BaseTransactionListRepository {
   Future<List<MyTransaction>> retrieveItems({required String userId});
   Future<String> createItem({required String userId, required MyTransaction item});
   Future<void> updateItem({required String userId, required MyTransaction item});
   Future<void> deleteItem({required String userId, required String itemId});
 }
 
-final transactionItemRepositoryProvider =
-    Provider<TransactionItemRepository>((ref) => TransactionItemRepository(ref.read));
+final transactionListRepositoryProvider =
+    Provider<TransactionListRepository>((ref) => TransactionListRepository(ref.read));
 
-class TransactionItemRepository implements BaseTransactionItemRepository {
+class TransactionListRepository implements BaseTransactionListRepository {
   final Reader _read;
 
-  const TransactionItemRepository(this._read);
+  const TransactionListRepository(this._read);
 
   @override
   Future<List<MyTransaction>> retrieveItems({required String userId}) async {
@@ -49,8 +49,12 @@ class TransactionItemRepository implements BaseTransactionItemRepository {
   }
 
   @override
-  Future<void> updateItem({required String userId, required MyTransaction item}) {
-    // TODO: implement updateItem
-    throw UnimplementedError();
+  Future<void> updateItem({required String userId, required MyTransaction item}) async {
+    try {
+      final docRef = _read(firebaseFirestoreProvider).transactionsRef(userId).doc(item.id);
+      await docRef.update(item.toJson());
+    } on FirebaseException catch (e) {
+      throw CustomException(message: e.message);
+    }
   }
 }
