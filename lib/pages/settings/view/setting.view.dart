@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../services/services.dart';
+import '../../../controllers/controllers.dart';
 
-class SettingView extends StatelessWidget {
+class SettingView extends ConsumerWidget {
   const SettingView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final user = AppAuth.user;
+  Widget build(BuildContext context, ref) {
+    final user = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -30,7 +31,7 @@ class SettingView extends StatelessWidget {
                 Text(user?.uid ?? ''),
                 const SizedBox(height: 8),
                 ElevatedButton(
-                  onPressed: () => AppAuth.signOut(),
+                  onPressed: () => ref.read(authControllerProvider.notifier).signOut(),
                   child: const Text('Sign out'),
                 ),
               ],

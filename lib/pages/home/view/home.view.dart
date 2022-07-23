@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../configs/configs.dart';
 import '../../../models/models.dart';
 import '../../../pages/pages.dart';
+import '../../../controllers/controllers.dart';
 import '../../../services/firebase/fbase.dart';
 import '../widgets/widgets.dart';
 
 const Color _bg = Colors.blue;
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   final String title;
   const HomeView({Key? key, required this.title}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: <Widget>[
           sliverAppbar(),
           const _ListTopRCorner(),
-          listItems(),
+          // listItems(),
+          listItems2(ref),
         ],
       ),
     );
@@ -76,6 +79,26 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  Widget listItems2(WidgetRef ref) {
+    final itemList = ref.watch(transactionListControllerProvider);
+    return itemList.when(
+        data: (transactions) => SliverList(
+                delegate: SliverChildBuilderDelegate(
+              (context, index) => TransactionListItem(
+                transaction: transactions[index],
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    TransactionDetailsView.routeName,
+                    arguments: transactions[index],
+                  );
+                },
+              ),
+              childCount: transactions.length,
+            )),
+        error: (e, _) => buildSliverBoxCenter(const Text('error')),
+        loading: () => buildSliverBoxCenter(const Text('Loading... 2')));
+  }
+
   SliverToBoxAdapter buildSliverBoxCenter(Widget child) {
     return SliverToBoxAdapter(
       child: SizedBox(
@@ -99,8 +122,6 @@ class _ListTopRCorner extends StatelessWidget {
           Container(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 2),
             width: double.infinity,
-            // height: 30,
-            child: const Text('Today'),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -108,6 +129,8 @@ class _ListTopRCorner extends StatelessWidget {
                 topRight: Radius.circular(height),
               ),
             ),
+            // height: 30,
+            child: const Text('Today'),
           ),
         ],
       ),
