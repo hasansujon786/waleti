@@ -31,12 +31,10 @@ class _RootNavigationState extends State<RootNavigation> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Consumer(
           builder: (context, ref, child) => FloatingActionButton(
-            onPressed: () {
-              NewTransactionInputModal.open(context, (newTransaction) {
-                ref.read(transactionListControllerProvider.notifier).addItem(item: newTransaction);
-                Navigator.pop(context);
-              });
-            },
+            onPressed: () => CreateTransactionModal.open(context, (newTransaction) {
+              ref.read(transactionListControllerProvider.notifier).addItem(item: newTransaction);
+              Navigator.pop(context);
+            }),
             tooltip: 'Create transaction',
             child: const Icon(Icons.add),
           ),
