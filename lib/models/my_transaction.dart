@@ -14,9 +14,21 @@ class MyTransaction {
     this.id = '',
     required this.title,
     required this.amount,
-    required this.createdAt,
-    this.type = MyTransactionDataType.income,
-  });
+    this.type = MyTransactionDataType.expanse,
+    DateTime? createdAt,
+  }) : createdAt = createdAt ?? DateTime.now();
+
+  factory MyTransaction.fromJson(Map<String, dynamic> json) {
+    return MyTransaction(
+      id: json['id'],
+      title: json['title'],
+      amount: json['amount'],
+      type: MyTransactionDataType.values.firstWhere((e) => describeEnum(e) == json['type']),
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
+    );
+  }
+
+  factory MyTransaction.empty() => MyTransaction(title: '', amount: 0);
 
   Map<String, dynamic> toJson() {
     return {
@@ -26,16 +38,6 @@ class MyTransaction {
       'createdAt': createdAt,
       'type': type.name,
     };
-  }
-
-  static MyTransaction fromJson(Map<String, dynamic> json) {
-    return MyTransaction(
-      id: json['id'],
-      title: json['title'],
-      amount: json['amount'],
-      type: MyTransactionDataType.values.firstWhere((e) => describeEnum(e) == json['type']),
-      createdAt: (json['createdAt'] as Timestamp).toDate(),
-    );
   }
 }
 

@@ -85,11 +85,14 @@ class HomeView extends ConsumerWidget {
                 delegate: SliverChildBuilderDelegate(
               (context, index) => TransactionListItem(
                 transaction: transactions[index],
-                onTap: () {
-                  Navigator.of(context).pushNamed(
+                onTap: () async {
+                  final deleteTransactionId = await Navigator.of(context).pushNamed(
                     TransactionDetailsView.routeName,
-                    arguments: transactions[index],
-                  );
+                    arguments: index,
+                  ) as String?;
+                  if (deleteTransactionId != null) {
+                    ref.read(transactionListControllerProvider.notifier).deleteItem(itemId: deleteTransactionId);
+                  }
                 },
               ),
               childCount: transactions.length,
