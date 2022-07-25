@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CustomSwitch<T> extends StatefulWidget {
+class TabularSwitch<T> extends StatefulWidget {
   final List<String> optionNames;
   final List<T> options;
   final Function(T) onSelect;
-  const CustomSwitch({
+  final double margin;
+  const TabularSwitch({
     Key? key,
     required this.optionNames,
     required this.options,
     required this.onSelect,
+    this.margin = 0.00,
   }) : super(key: key);
 
   @override
-  State<CustomSwitch<T>> createState() => _CustomSwitchState<T>();
+  State<TabularSwitch<T>> createState() => _TabularSwitchState<T>();
 }
 
-class _CustomSwitchState<T> extends State<CustomSwitch<T>> {
+class _TabularSwitchState<T> extends State<TabularSwitch<T>> {
   static final _alignments = [Alignment.centerLeft, Alignment.centerRight];
   var _colors = [Colors.white, Colors.black];
   var _selectedIndex = 0;
@@ -23,10 +25,10 @@ class _CustomSwitchState<T> extends State<CustomSwitch<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 52,
+      height: 50,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: Theme.of(context).primaryColor.withOpacity(0.08),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Stack(
@@ -38,7 +40,7 @@ class _CustomSwitchState<T> extends State<CustomSwitch<T>> {
             child: FractionallySizedBox(
               widthFactor: 1 / widget.optionNames.length,
               child: Container(
-                margin: const EdgeInsets.all(6),
+                margin: EdgeInsets.all(widget.margin),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(50),
@@ -61,16 +63,13 @@ class _CustomSwitchState<T> extends State<CustomSwitch<T>> {
                     },
                     child: Container(
                       color: Colors.transparent,
-                      child: Center(
-                        child: AnimatedDefaultTextStyle(
-                          child: Text(
-                            widget.optionNames[i],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          style: TextStyle(color: _colors[i]),
-                          duration: const Duration(milliseconds: 200),
+                      alignment: Alignment.center,
+                      child: AnimatedDefaultTextStyle(
+                        style: TextStyle(color: _colors[i]),
+                        duration: const Duration(milliseconds: 200),
+                        child: Text(
+                          widget.optionNames[i],
+                          style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
