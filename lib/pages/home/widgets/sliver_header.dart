@@ -1,14 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:waleti/models/models.dart';
+import 'package:intl/intl.dart';
 
 import '../../../configs/configs.dart';
-import 'package:waleti/shared/ui/ui.dart';
+import '../../../models/models.dart';
+import '../../../shared/ui/ui.dart';
+import '../../../extensions/date_time_extension.dart';
 
 // const _bg = Colors.blue;
 const _bg = Color(0xffF8FAF7);
 
 class SliverHeader extends StatelessWidget {
-  const SliverHeader({Key? key}) : super(key: key);
+  final List<MyTransaction> userTransactions;
+  const SliverHeader({
+    Key? key,
+    this.userTransactions = const [],
+  }) : super(key: key);
+
+  List<MyTransaction> get lastWeekTransactions {
+    return userTransactions.where((tx) {
+      return tx.createdAt.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+    }).toList();
+  }
+
+  double get totalSpendingOfWeek {
+    return lastWeekTransactions.fold(0, (sum, item) => sum + item.amount);
+  }
+
+  DateTime get today {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  List<ChartBarItemDataOfDay> get groupedTransactionValues {
+    return List.generate(
+      7,
+      (index) {
+        final dateToCheck = DateTime.now().subtract(Duration(days: index));
+        double totalsum = 0.0;
+        for (var i = 0; i < lastWeekTransactions.length; i++) {
+          if (lastWeekTransactions[i].createdAt.day == dateToCheck.day &&
+              lastWeekTransactions[i].createdAt.month == dateToCheck.month &&
+              lastWeekTransactions[i].createdAt.year == dateToCheck.year) {
+            totalsum += lastWeekTransactions[i].amount;
+          }
+        }
+
+        return ChartBarItemDataOfDay(
+          isToday: dateToCheck.isToday,
+          date: dateToCheck.day,
+          day: DateFormat.E().format(dateToCheck),
+          totalSpendingOfDay: totalsum,
+          spendignPercentace: totalsum / totalSpendingOfWeek,
+        );
+      },
+    ).reversed.toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +70,12 @@ class SliverHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(height: 24),
-              const Expanded(
-                child: LineChartContainer(),
+              Expanded(
+                child: userTransactions.isNotEmpty
+                    ? LineChartContainer(weeklyTransactionsData: groupedTransactionValues)
+                    : const Center(
+                        child: Text('loading'),
+                      ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),

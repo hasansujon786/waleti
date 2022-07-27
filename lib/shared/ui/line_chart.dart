@@ -1,8 +1,21 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/models.dart';
+
 class LineChartWeek extends StatelessWidget {
-  const LineChartWeek({Key? key}) : super(key: key);
+  final List<ChartBarItemDataOfDay> weeklyTransactionsData;
+  final int currentDayViewIndex;
+  final Function(int) onUpdateViewIndex;
+  const LineChartWeek({
+    Key? key,
+    required this.weeklyTransactionsData,
+    required this.onUpdateViewIndex,
+    this.currentDayViewIndex = 0,
+  }) : super(key: key);
+
+  List<double> get xValues => [0, 1, 2, 3, 4, 5, 6];
+  List<double> get yValues => weeklyTransactionsData.map((item) => item.spendignPercentace).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +29,7 @@ class LineChartWeek extends StatelessWidget {
   }
 
   LineChartData get chartData => LineChartData(
-        lineTouchData: LineTouchData(enabled: false),
+        lineTouchData: LineTouchData(enabled: true),
         gridData: FlGridData(show: false),
         titlesData: titlesData,
         borderData: borderData,
@@ -24,8 +37,8 @@ class LineChartWeek extends StatelessWidget {
           barData,
         ],
         minX: 0,
-        maxX: 12,
-        maxY: 7,
+        maxX: 6,
+        maxY: 1,
         minY: 0,
       );
 
@@ -46,16 +59,15 @@ class LineChartWeek extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        spots: const [
-          FlSpot(-20, 9),
-          FlSpot(0, 3),
-          FlSpot(2, 2.8),
-          FlSpot(4, 1.2),
-          FlSpot(6, 2.8),
-          FlSpot(8, 2.6),
-          FlSpot(10, 3.9),
-          FlSpot(12, 3),
-          FlSpot(20, 3),
+        spots: [
+          for (var i = 0; i < xValues.length; i++) FlSpot(xValues[i], yValues[i]),
+          // FlSpot(0, 1),
+          // FlSpot(1, 0.8),
+          // FlSpot(2, 0.2),
+          // FlSpot(3, 0.8),
+          // FlSpot(4, 0.6),
+          // FlSpot(5, 0.9),
+          // FlSpot(6, 0.3),
         ],
       );
 
@@ -76,65 +88,88 @@ class LineChartWeek extends StatelessWidget {
         leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 32,
             interval: 1,
+            showTitles: true,
+            reservedSize: 70,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
       );
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff72719b),
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'S';
-        break;
-      case 2:
-        text = 'M';
-        break;
-      case 4:
-        text = 'T';
-        break;
-      case 6:
-        text = 'W';
-        break;
-      case 8:
-        text = 'T';
-        break;
-      case 10:
-        text = 'F';
-        break;
-      case 12:
-        text = 'S';
-        break;
-      default:
-        text = '';
-        break;
-    }
+    final index = value.toInt();
+    String day = weeklyTransactionsData[index].day;
+    int date = weeklyTransactionsData[index].date;
+    bool isToday = weeklyTransactionsData[index].isToday;
 
-    return SideTitleWidget(axisSide: meta.axisSide, child: Text(text, style: style));
+    return SideTitleWidget(
+      space: 10,
+      axisSide: meta.axisSide,
+      child: GestureDetector(
+        onTap: () => onUpdateViewIndex(index),
+        child: SizedBox(
+          width: 44,
+          child: Column(
+            children: [
+              Text(
+                day,
+                style: const TextStyle(color: Color(0xff72719b), fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+              const SizedBox(height: 3),
+              CircleAvatar(
+                backgroundColor: Colors.deepPurple.shade300.withOpacity(isToday ? 0.8 : 0),
+                radius: 15,
+                child: Text(
+                  date.toString(),
+                  style: TextStyle(
+                    color: isToday ? Colors.white : Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                width: 30,
+                height: 7,
+                decoration: BoxDecoration(
+                  color: currentDayViewIndex == index ? Colors.deepPurple.shade300 : Colors.transparent,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
 class LineChartContainer extends StatefulWidget {
-  const LineChartContainer({Key? key}) : super(key: key);
+  final List<ChartBarItemDataOfDay> weeklyTransactionsData;
+  const LineChartContainer({
+    Key? key,
+    required this.weeklyTransactionsData,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => LineChartContainerState();
 }
 
 class LineChartContainerState extends State<LineChartContainer> {
+  var _currentDayViewIndex = 6;
+  void updateCurrentDayViewIndex(int index) {
+    setState(() {
+      _currentDayViewIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.5, // 3/2
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
         // decoration: const BoxDecoration(
         //   gradient: LinearGradient(
         //     colors: [
@@ -147,9 +182,16 @@ class LineChartContainerState extends State<LineChartContainer> {
         // ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const <Widget>[
-            Expanded(child: LineChartWeek()),
-            SizedBox(height: 10),
+          children: <Widget>[
+            const SizedBox(height: 40),
+            Expanded(
+              child: LineChartWeek(
+                currentDayViewIndex: _currentDayViewIndex,
+                onUpdateViewIndex: updateCurrentDayViewIndex,
+                weeklyTransactionsData: widget.weeklyTransactionsData,
+              ),
+            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
