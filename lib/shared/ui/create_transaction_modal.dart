@@ -123,7 +123,8 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
                     ],
                   ),
                   const SizedBox(height: 32),
-                  TabularSwitch<MyTransactionDataType>(
+                  OptionSwitch<MyTransactionDataType>(
+                    value: MyTransactionDataType.expanse,
                     onSelect: (selected) => _transactionType = selected,
                     optionNames: const ['Expanse', 'Income'],
                     options: const [MyTransactionDataType.expanse, MyTransactionDataType.income],

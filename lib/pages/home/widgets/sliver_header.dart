@@ -84,7 +84,8 @@ class SliverHeader extends StatelessWidget {
                 child: Consumer(
                   builder: (context, ref, child) {
                     var transactionListFilter = ref.watch(transactionListFilterProvider.state);
-                    return TabularSwitch<TransactionListFilter>(
+                    return OptionSwitch<TransactionListFilter>(
+                      value: transactionListFilter.state,
                       onSelect: (selected) => transactionListFilter.state = selected,
                       optionNames: const ['Expanse', 'Income'],
                       options: const [TransactionListFilter.expanse, TransactionListFilter.income],

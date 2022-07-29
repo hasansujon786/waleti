@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 
-class TabularSwitch<T> extends StatefulWidget {
-  final List<String> optionNames;
+final _alignments = [Alignment.centerLeft, Alignment.centerRight];
+
+class OptionSwitch<T> extends StatelessWidget {
+  final T value;
   final List<T> options;
+  final List<String> optionNames;
   final Function(T) onSelect;
   final double margin;
-  const TabularSwitch({
+
+  const OptionSwitch({
     Key? key,
-    required this.optionNames,
+    required this.value,
     required this.options,
+    required this.optionNames,
     required this.onSelect,
     this.margin = 0.00,
   }) : super(key: key);
 
   @override
-  State<TabularSwitch<T>> createState() => _TabularSwitchState<T>();
-}
-
-class _TabularSwitchState<T> extends State<TabularSwitch<T>> {
-  static final _alignments = [Alignment.centerLeft, Alignment.centerRight];
-  var _colors = [Colors.white, Colors.black];
-  var _selectedIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final selectedIndex = options.indexWhere((opt) => opt == value);
+
     return Container(
       height: 50,
       width: double.infinity,
@@ -35,12 +33,12 @@ class _TabularSwitchState<T> extends State<TabularSwitch<T>> {
         children: [
           AnimatedAlign(
             curve: Curves.fastOutSlowIn,
-            alignment: _alignments[_selectedIndex],
+            alignment: _alignments[selectedIndex],
             duration: const Duration(milliseconds: 280),
             child: FractionallySizedBox(
-              widthFactor: 1 / widget.optionNames.length,
+              widthFactor: 1 / optionNames.length,
               child: Container(
-                margin: EdgeInsets.all(widget.margin),
+                margin: EdgeInsets.all(margin),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(50),
@@ -50,27 +48,20 @@ class _TabularSwitchState<T> extends State<TabularSwitch<T>> {
           ),
           Row(
             children: [
-              for (var i = 0; i < widget.options.length; i++)
+              for (var i = 0; i < options.length; i++)
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      if (_selectedIndex == i) return;
-                      setState(() {
-                        _selectedIndex = i;
-                        _colors = _colors.reversed.toList();
-                      });
-                      widget.onSelect(widget.options[i]);
+                      if (selectedIndex == i) return;
+                      onSelect(options[i]);
                     },
                     child: Container(
                       color: Colors.transparent,
                       alignment: Alignment.center,
                       child: AnimatedDefaultTextStyle(
-                        style: TextStyle(color: _colors[i]),
+                        style: TextStyle(color: i == selectedIndex ? Colors.white : Colors.black),
                         duration: const Duration(milliseconds: 200),
-                        child: Text(
-                          widget.optionNames[i],
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
+                        child: Text(optionNames[i], style: const TextStyle(fontWeight: FontWeight.w500)),
                       ),
                     ),
                   ),
