@@ -10,7 +10,7 @@ class HomeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final transactions = ref.watch(transactionListControllerProvider);
+    final transactions = ref.watch(filteredTransactionsListProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(

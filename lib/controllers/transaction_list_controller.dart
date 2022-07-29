@@ -6,6 +6,28 @@ import '../models/models.dart';
 import '../repositories/repositories.dart';
 import 'controllers.dart';
 
+enum TransactionListFilter { all, expanse, income }
+
+final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) => TransactionListFilter.expanse);
+
+final filteredTransactionsListProvider = Provider<AsyncValue<List<MyTransaction>>>((ref) {
+  final allTransactions = ref.watch(transactionListControllerProvider);
+  final filterState = ref.watch(transactionListFilterProvider);
+
+  return allTransactions.whenData((items) {
+    switch (filterState) {
+      case TransactionListFilter.expanse:
+        return items.where((item) => item.type == MyTransactionDataType.expanse).toList();
+      case TransactionListFilter.income:
+        return items.where((item) => item.type == MyTransactionDataType.income).toList();
+      case TransactionListFilter.all:
+        return items;
+      default:
+        return [];
+    }
+  });
+});
+
 final transactionListControllerProvider =
     StateNotifierProvider<TransactionListController, AsyncValue<List<MyTransaction>>>(
   (ref) {

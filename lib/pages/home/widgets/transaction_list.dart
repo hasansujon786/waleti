@@ -10,8 +10,8 @@ class TransactionList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final itemList = ref.watch(transactionListControllerProvider);
-    return itemList.when(
+    final filteredTransactions = ref.watch(filteredTransactionsListProvider);
+    return filteredTransactions.when(
         data: (transactions) => SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => TransactionListItem(
@@ -30,7 +30,7 @@ class TransactionList extends ConsumerWidget {
               ),
             ),
         error: (e, _) => buildSliverBoxCenter(const Text('error')),
-        loading: () => buildSliverBoxCenter(const Text('Loading... 2')));
+        loading: () => buildSliverBoxCenter(const Text('Loading...')));
   }
 
   SliverToBoxAdapter buildSliverBoxCenter(Widget child) {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../configs/configs.dart';
+import '../../../controllers/controllers.dart';
+import '../../../extensions/date_time_extension.dart';
 import '../../../models/models.dart';
 import '../../../shared/ui/ui.dart';
-import '../../../extensions/date_time_extension.dart';
 
 // const _bg = Colors.blue;
 const _bg = Color(0xffF8FAF7);
@@ -79,12 +81,15 @@ class SliverHeader extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: TabularSwitch<MyTransactionDataType>(
-                  onSelect: (selected) {
-                    print(selected);
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    var transactionListFilter = ref.watch(transactionListFilterProvider.state);
+                    return TabularSwitch<TransactionListFilter>(
+                      onSelect: (selected) => transactionListFilter.state = selected,
+                      optionNames: const ['Expanse', 'Income'],
+                      options: const [TransactionListFilter.expanse, TransactionListFilter.income],
+                    );
                   },
-                  optionNames: const ['Expanse', 'Income'],
-                  options: const [MyTransactionDataType.expanse, MyTransactionDataType.income],
                 ),
               )
             ],
