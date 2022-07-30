@@ -1,22 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
+
+part 'my_transaction.g.dart';
 
 enum MyTransactionDataType { expanse, income }
 
-class MyTransaction {
-  String id;
-  String title;
-  double amount;
-  DateTime createdAt;
-  MyTransactionDataType type;
+var _uuid = const Uuid();
 
+@HiveType(typeId: 1)
+class MyTransaction extends HiveObject {
   MyTransaction({
-    this.id = '',
     required this.title,
     required this.amount,
-    this.type = MyTransactionDataType.expanse,
     DateTime? createdAt,
-  }) : createdAt = createdAt ?? DateTime.now();
+    String? id,
+    MyTransactionDataType type = MyTransactionDataType.expanse,
+  })  : createdAt = createdAt ?? DateTime.now(),
+        id = id ?? _uuid.v4(),
+        _type = type.name;
+
+  @HiveField(0)
+  String id;
+  @HiveField(1)
+  String title;
+  @HiveField(2)
+  double amount;
+  @HiveField(3)
+  DateTime createdAt;
+
+  @HiveField(4)
+  String _type;
+  set type(MyTransactionDataType value) => _type = value.name;
+  MyTransactionDataType get type => _type == 'expanse' ? MyTransactionDataType.expanse : MyTransactionDataType.income;
 
   factory MyTransaction.fromJson(Map<String, dynamic> json) {
     return MyTransaction(

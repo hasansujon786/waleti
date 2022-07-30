@@ -49,53 +49,45 @@ class TransactionListController extends StateNotifier<AsyncValue<List<MyTransact
   Future<void> retrieveItems({bool isRefreshing = false}) async {
     if (isRefreshing) state = const AsyncValue.loading();
     try {
-      final items = await _read(transactionListRepositoryProvider).retrieveItems(userId: _userId!);
+      final items = await _read(transactionListLocalRepositoryProvider).retrieveItems();
       if (mounted) {
-        state = AsyncValue.data(items);
+        state = AsyncValue.data(items.reversed.toList());
       }
-    } on CustomException catch (e) {
+    } catch (e) {
       state = AsyncValue.error(e);
     }
   }
 
   Future<void> addItem({required MyTransaction item}) async {
     try {
-      final itemId = await _read(transactionListRepositoryProvider).createItem(
-        userId: _userId!,
-        item: item,
-      );
-
-      item.id = itemId;
-      state.whenData((items) => state = AsyncValue.data(items..add(item)));
-    } on CustomException catch (e) {
-      print(e);
+      await _read(transactionListLocalRepositoryProvider).createItem(item: item);
+      state.whenData((items) => state = AsyncValue.data([item, ...items]));
+    } catch (e) {
+      state = AsyncValue.error(e);
       // _read(itemListExceptionProvider).state = e;
     }
   }
 
-  Future<void> deleteItem({required String itemId}) async {
+  Future<void> deleteItem({required MyTransaction item}) async {
     try {
-      await _read(transactionListRepositoryProvider).deleteItem(userId: _userId!, itemId: itemId);
-
-      state.whenData((items) => state = AsyncValue.data(items..removeWhere((item) => item.id == itemId)));
-    } on CustomException catch (e) {
-      print(e);
-      // _read(itemListExceptionProvider).state = e;
+      await _read(transactionListLocalRepositoryProvider).deleteItem(item: item);
+      state.whenData((items) => state = AsyncValue.data(items..removeWhere((el) => el.id == item.id)));
+    } catch (e) {
+      state = AsyncValue.error(e);
     }
   }
 
   Future<void> updateItem({required MyTransaction updatedItem}) async {
     try {
-      await _read(transactionListRepositoryProvider).updateItem(userId: _userId!, item: updatedItem);
+      await _read(transactionListLocalRepositoryProvider).updateItem(item: updatedItem);
       state.whenData((items) {
         state = AsyncValue.data([
           for (final item in items)
             if (item.id == updatedItem.id) updatedItem else item
         ]);
       });
-    } on CustomException catch (e) {
-      print(e);
-      // _read(itemListExceptionProvider).state = e;
+    } catch (e) {
+      state = AsyncValue.error(e);
     }
   }
 }

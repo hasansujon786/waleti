@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/controllers.dart';
+import '../../../models/models.dart';
 import '../../../pages/pages.dart';
 import 'widgets.dart';
 
@@ -17,12 +18,12 @@ class TransactionList extends ConsumerWidget {
                 (context, index) => TransactionListItem(
                   transaction: transactions[index],
                   onTap: () async {
-                    final deleteTransactionId = await Navigator.of(context).pushNamed(
+                    final deleteTransaction = await Navigator.of(context).pushNamed(
                       TransactionDetailsView.routeName,
                       arguments: index,
-                    ) as String?;
-                    if (deleteTransactionId != null) {
-                      ref.read(transactionListControllerProvider.notifier).deleteItem(itemId: deleteTransactionId);
+                    ) as MyTransaction?;
+                    if (deleteTransaction != null) {
+                      ref.read(transactionListControllerProvider.notifier).deleteItem(item: deleteTransaction);
                     }
                   },
                 ),

@@ -124,8 +124,8 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
                   ),
                   const SizedBox(height: 32),
                   OptionSwitch<MyTransactionDataType>(
-                    value: MyTransactionDataType.expanse,
-                    onSelect: (selected) => _transactionType = selected,
+                    value: _transactionType,
+                    onSelect: (newValue) => setState(() => _transactionType = newValue),
                     optionNames: const ['Expanse', 'Income'],
                     options: const [MyTransactionDataType.expanse, MyTransactionDataType.income],
                   ),

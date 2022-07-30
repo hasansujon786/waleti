@@ -23,7 +23,7 @@ class TransactionDetailsView extends ConsumerWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context, transaction.id);
+                    Navigator.pop(context, transaction);
                   },
                   icon: const Icon(Icons.delete),
                 ),
