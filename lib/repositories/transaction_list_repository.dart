@@ -58,3 +58,15 @@ class TransactionListRepository implements BaseTransactionListRepository {
     }
   }
 }
+
+
+// Stream<List<MyTransaction>> readTransactionsStream() {
+//   String? _uid() => FirebaseAuth.instance.currentUser?.uid;
+
+//   return FirebaseFirestore.instance
+//       .collection('users')
+//       .doc(_uid())
+//       .collection('transactions')
+//       .snapshots()
+//       .map((snapshot) => snapshot.docs.map((doc) => MyTransaction.fromJson(doc.data())).toList());
+// }

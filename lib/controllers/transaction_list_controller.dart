@@ -15,16 +15,24 @@ final filteredTransactionsListProvider = Provider<AsyncValue<List<MyTransaction>
   final filterState = ref.watch(transactionListFilterProvider);
 
   return allTransactions.whenData((items) {
+    List<MyTransaction> filteredItems = [];
     switch (filterState) {
       case TransactionListFilter.expanse:
-        return items.where((item) => item.type == MyTransactionDataType.expanse).toList();
+        filteredItems = items.where((item) => item.type == MyTransactionDataType.expanse).toList();
+        break;
       case TransactionListFilter.income:
-        return items.where((item) => item.type == MyTransactionDataType.income).toList();
+        filteredItems = items.where((item) => item.type == MyTransactionDataType.income).toList();
+        break;
       case TransactionListFilter.all:
-        return items;
+        filteredItems = items;
+        break;
       default:
-        return [];
+        filteredItems = items;
+        break;
     }
+
+    filteredItems.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return filteredItems;
   });
 });
 
@@ -51,7 +59,7 @@ class TransactionListController extends StateNotifier<AsyncValue<List<MyTransact
     try {
       final items = await _read(transactionListLocalRepositoryProvider).retrieveItems();
       if (mounted) {
-        state = AsyncValue.data(items.reversed.toList());
+        state = AsyncValue.data(items);
       }
     } catch (e) {
       state = AsyncValue.error(e);
@@ -90,15 +98,4 @@ class TransactionListController extends StateNotifier<AsyncValue<List<MyTransact
       state = AsyncValue.error(e);
     }
   }
-}
-
-Stream<List<MyTransaction>> readTransactionsStream() {
-  String? _uid() => FirebaseAuth.instance.currentUser?.uid;
-
-  return FirebaseFirestore.instance
-      .collection('users')
-      .doc(_uid())
-      .collection('transactions')
-      .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) => MyTransaction.fromJson(doc.data())).toList());
 }
