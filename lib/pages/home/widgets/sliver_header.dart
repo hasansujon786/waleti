@@ -40,9 +40,7 @@ class SliverHeader extends StatelessWidget {
         final dateToCheck = DateTime.now().subtract(Duration(days: index));
         double totalsum = 0.0;
         for (var i = 0; i < lastWeekTransactions.length; i++) {
-          if (lastWeekTransactions[i].createdAt.day == dateToCheck.day &&
-              lastWeekTransactions[i].createdAt.month == dateToCheck.month &&
-              lastWeekTransactions[i].createdAt.year == dateToCheck.year) {
+          if (lastWeekTransactions[i].createdAt.isSameDayAs(dateToCheck)) {
             totalsum += lastWeekTransactions[i].amount;
           }
         }

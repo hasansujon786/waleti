@@ -13,4 +13,18 @@ extension DateUtils on DateTime {
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
     return yesterday.day == day && yesterday.month == month && yesterday.year == year;
   }
+
+  bool isSameDayAs(DateTime dateToCheck) {
+    return day == dateToCheck.day && month == dateToCheck.month && year == dateToCheck.year;
+  }
 }
+
+
+    // var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // // var now = DateTime.now();
+    // var now = DateTime.now().subtract(const Duration(days: 2));
+    // var weedDay = DateFormat.E().format(now);
+    // var curDayIndex = days.indexWhere((element) => element == weedDay);
+    // // print(curDayIndex);
+    // var rightSideIndex = 6 - curDayIndex;
+    //       var isPrevAndTodayIndex = index >= rightSideIndex;
