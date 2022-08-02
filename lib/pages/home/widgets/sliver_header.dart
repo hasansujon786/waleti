@@ -72,10 +72,8 @@ class SliverHeader extends StatelessWidget {
               const SizedBox(height: 24),
               Expanded(
                 child: userTransactions.isNotEmpty
-                    ? LineChartContainer(weeklyTransactionsData: groupedTransactionValues)
-                    : const Center(
-                        child: Text('loading'),
-                      ),
+                    ? LineChartWrapper(weeklyTransactionsData: groupedTransactionValues)
+                    : const Center(child: Text('Empty')),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),

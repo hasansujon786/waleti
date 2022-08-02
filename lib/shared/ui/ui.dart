@@ -6,4 +6,6 @@ export 'create_transaction_modal.dart';
 export 'auth_wrapper.dart';
 export 'line_chart.dart';
 export 'chart.dart';
+export 'line_chart_wrapper.dart';
+export 'bill_board.dart';
 
