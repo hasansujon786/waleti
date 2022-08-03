@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/controllers.dart';
 import '../widgets/widgets.dart';
 
-class HomeView extends ConsumerWidget {
+class HomeView extends StatelessWidget {
   final String title;
   const HomeView({Key? key, required this.title}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
-    final transactions = ref.watch(filteredTransactionsListProvider);
-    return Scaffold(
+  Widget build(BuildContext context) {
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverHeader(userTransactions: transactions.value ?? []),
-          const SliverListTopRCorner(child: Text('Transactions')),
-          const TransactionList(),
+          SliverHeader(),
+          SliverListTopRCorner(),
+          TransactionList(),
         ],
       ),
     );

@@ -20,7 +20,7 @@ class TransactionList extends ConsumerWidget {
                   onTap: () async {
                     final deleteTransaction = await Navigator.of(context).pushNamed(
                       TransactionDetailsView.routeName,
-                      arguments: index,
+                      arguments: transactions[index],
                     ) as MyTransaction?;
                     if (deleteTransaction != null) {
                       ref.read(transactionListControllerProvider.notifier).deleteItem(item: deleteTransaction);

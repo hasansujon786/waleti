@@ -98,4 +98,13 @@ class TransactionListController extends StateNotifier<AsyncValue<List<MyTransact
       state = AsyncValue.error(e);
     }
   }
+
+  Future<void> deleteAllTransactions() async {
+    try {
+      await _read(transactionListLocalRepositoryProvider).cleanDatabase();
+      state = const AsyncValue.data([]);
+    } catch (e) {
+      state = AsyncValue.error(e);
+    }
+  }
 }

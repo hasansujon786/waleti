@@ -11,39 +11,39 @@ class TransactionDetailsView extends ConsumerWidget {
   static const routeName = '/transaction_details';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final curIndex = ModalRoute.of(context)!.settings.arguments as int;
+    final transaction = ModalRoute.of(context)!.settings.arguments as MyTransaction;
 
-    return ref.watch(transactionListControllerProvider).when(
-        data: ((transactions) {
-          final transaction = transactions.length > curIndex ? transactions[curIndex] : MyTransaction.empty();
-
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Transaction Details'),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context, transaction);
-                  },
-                  icon: const Icon(Icons.delete),
-                ),
-                IconButton(
-                  onPressed: () {
-                    final item = transaction;
-                    item.title = 'updated';
-                    ref.read(transactionListControllerProvider.notifier).updateItem(updatedItem: item);
-                  },
-                  icon: const Icon(Icons.update),
-                ),
-                const SizedBox(width: 4)
-              ],
-            ),
-            body: Center(
-              child: Text(transaction.title),
-            ),
-          );
-        }),
-        error: (error, stackTrace) => const Text('error'),
-        loading: () => const Text('loading...'));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Transaction Details'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context, transaction);
+            },
+            icon: const Icon(Icons.delete),
+          ),
+          IconButton(
+            onPressed: () {
+              final item = transaction;
+              item.title = 'updated';
+              ref.read(transactionListControllerProvider.notifier).updateItem(updatedItem: item);
+            },
+            icon: const Icon(Icons.update),
+          ),
+          const SizedBox(width: 4)
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(transaction.title),
+            Text('${transaction.amount}'),
+          ],
+        ),
+      ),
+    );
+    ;
   }
 }

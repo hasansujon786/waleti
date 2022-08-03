@@ -98,9 +98,7 @@ class LineChartWeek extends StatelessWidget {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     final index = value.toInt();
-    String day = weeklyTransactionsData[index].day;
-    int date = weeklyTransactionsData[index].date;
-    bool isToday = weeklyTransactionsData[index].isToday;
+   final info = weeklyTransactionsData[index]; 
 
     return SideTitleWidget(
       space: 10,
@@ -112,17 +110,17 @@ class LineChartWeek extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                day,
+                info.dayName,
                 style: const TextStyle(color: Color(0xff72719b), fontWeight: FontWeight.bold, fontSize: 12),
               ),
               const SizedBox(height: 3),
               CircleAvatar(
-                backgroundColor: Colors.deepPurple.shade300.withOpacity(isToday ? 0.8 : 0),
+                backgroundColor: Colors.deepPurple.shade300.withOpacity(info.isToday ? 0.8 : 0),
                 radius: 15,
                 child: Text(
-                  date.toString(),
+                  info.day.toString(),
                   style: TextStyle(
-                    color: isToday ? Colors.white : Colors.deepPurple,
+                    color: info.isToday ? Colors.white : Colors.deepPurple,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
