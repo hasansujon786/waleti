@@ -47,10 +47,8 @@ class LineChartWrapperState extends State<LineChartWrapper> {
   }
 
   int get todayNameIndex {
-    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    var now = DateTime.now();
-    var dayName = DateFormat.E().format(now);
-    // var now = DateTime.now().subtract(const Duration(days: 2));
+    final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    final dayName = DateFormat.E().format(DateTime.now());
     return days.indexWhere((element) => element == dayName);
   }
 
@@ -91,7 +89,9 @@ class LineChartWrapperState extends State<LineChartWrapper> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             const SizedBox(height: 8),
-            const BillBoard(),
+            BillBoard(
+              currentBalance: groupedTransactionValues[todayNameIndex].totalSpendingOfDay,
+            ),
             const SizedBox(height: 8),
             Expanded(
               child: widget.userTransactions.isEmpty

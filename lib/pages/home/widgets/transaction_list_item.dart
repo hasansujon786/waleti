@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../shared/utils/formatter.dart';
 import '../../../configs/configs.dart';
 import '../../../models/models.dart';
 
@@ -20,22 +21,40 @@ class TransactionListItem extends StatelessWidget {
       onTap: onTap,
       horizontalTitleGap: 8,
       leading: leading(context),
-      title: Text(
-        transaction.title,
-        style: TextStyle(color: Palette.text),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(transaction.title, style: TextStyle(color: Palette.text)),
+          currency(),
+        ],
       ),
-      subtitle: Text(
-        dateFormater.format(transaction.createdAt),
-        style: Theme.of(context).textTheme.caption,
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Shoping', style: Theme.of(context).textTheme.caption),
+          Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
+        ],
       ),
-      trailing: Text(
-        '${transaction.type == MyTransactionDataType.income ? '+' : '-'} \$ ${transaction.amount}',
+    );
+  }
+
+  RichText currency() {
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
         style: TextStyle(color: Palette.text, fontWeight: FontWeight.w500),
+        children: [
+          TextSpan(text: transaction.type == MyTransactionDataType.income ? '+ ' : '- '),
+          const WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Text(
+              '\$ ',
+              style: TextStyle(fontSize: 11),
+            ),
+          ),
+          TextSpan(text: '${transaction.amount}')
+        ],
       ),
-      // trailing: IconButton(
-      //   icon: const Icon(Icons.delete),
-      //   onPressed: () => onDeleteTransaction(transaction.id),
-      // ),
     );
   }
 
@@ -51,15 +70,15 @@ class TransactionListItem extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         color: Colors.grey.shade200,
       ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Jan', style: textStyle),
-            Text('25', style: textStyle),
-          ],
-        ),
-      ),
+      // child: Center(
+      //   child: Column(
+      //     mainAxisSize: MainAxisSize.min,
+      //     children: [
+      //       Text('Jan', style: textStyle),
+      //       Text('25', style: textStyle),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
