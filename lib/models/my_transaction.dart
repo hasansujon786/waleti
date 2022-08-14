@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
+import 'transaction_category.dart';
+
 part 'my_transaction.g.dart';
 
 enum MyTransactionDataType { expanse, income }
@@ -14,11 +16,13 @@ class MyTransaction extends HiveObject {
   MyTransaction({
     required this.title,
     required this.amount,
+    TransactionCategory? category,
     DateTime? createdAt,
     String? id,
     MyTransactionDataType type = MyTransactionDataType.expanse,
   })  : createdAt = createdAt ?? DateTime.now(),
         id = id ?? _uuid.v4(),
+        _category = category?.name,
         _type = type.name;
 
   @HiveField(0)
@@ -34,6 +38,16 @@ class MyTransaction extends HiveObject {
   String _type;
   set type(MyTransactionDataType value) => _type = value.name;
   MyTransactionDataType get type => _type == 'expanse' ? MyTransactionDataType.expanse : MyTransactionDataType.income;
+
+  @HiveField(5)
+  String? _category;
+  set category(TransactionCategory? ct) => _category = ct?.name;
+  TransactionCategory? get category {
+    if (_category == null) {
+      return null;
+    }
+    return transactionCategories.firstWhere((cg) => cg.name == _category);
+  }
 
   factory MyTransaction.fromJson(Map<String, dynamic> json) {
     return MyTransaction(

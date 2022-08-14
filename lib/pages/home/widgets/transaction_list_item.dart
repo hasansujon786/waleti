@@ -31,7 +31,7 @@ class TransactionListItem extends StatelessWidget {
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Shoping', style: Theme.of(context).textTheme.caption),
+          Text(transaction.category?.name ?? 'Not listed', style: Theme.of(context).textTheme.caption),
           Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
         ],
       ),
@@ -69,6 +69,9 @@ class TransactionListItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         color: Colors.grey.shade200,
+      ),
+      child: Center(
+        child: Icon(transaction.category?.icon ?? Icons.circle),
       ),
       // child: Center(
       //   child: Column(
