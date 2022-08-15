@@ -65,21 +65,18 @@ class SliverListTopRCorner extends ConsumerWidget {
     final mq = MediaQuery.of(context);
     double height = 25;
     return SliverToBoxAdapter(
-      child: Container(
+      child: ColoredBox(
         color: _bg,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Container(
               width: mq.size.width,
-              padding: const EdgeInsets.fromLTRB(24, 16, 24, 2),
+              padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.grey.shade200),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(height),
-                  topRight: Radius.circular(height),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(height)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,12 +91,12 @@ class SliverListTopRCorner extends ConsumerWidget {
                 ],
               ),
             ),
-            Positioned(
+            const Positioned(
               bottom: -2,
               right: 0,
               height: 4,
-              width: mq.size.width,
-              child: Container(color: Colors.white),
+              left: 0,
+              child: ColoredBox(color: Colors.white),
             ),
           ],
         ),

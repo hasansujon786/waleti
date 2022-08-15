@@ -63,6 +63,8 @@ class TransactionListItem extends StatelessWidget {
           fontWeight: FontWeight.w500,
           color: Palette.textLight,
         );
+    final isExpanse =  transaction.type == MyTransactionDataType.expanse;
+    final defaultIcon = isExpanse ? Icons.trending_down : Icons.trending_up;
     return Container(
       height: 48,
       width: 48,
@@ -70,9 +72,7 @@ class TransactionListItem extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         color: Colors.grey.shade200,
       ),
-      child: Center(
-        child: Icon(transaction.category?.icon ?? Icons.circle),
-      ),
+      child: Center(child: Icon(transaction.category?.icon ?? defaultIcon)),
       // child: Center(
       //   child: Column(
       //     mainAxisSize: MainAxisSize.min,
