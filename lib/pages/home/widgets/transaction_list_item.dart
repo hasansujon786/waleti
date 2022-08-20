@@ -31,7 +31,7 @@ class TransactionListItem extends StatelessWidget {
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(transaction.category?.name ?? 'Not listed', style: Theme.of(context).textTheme.caption),
+          Text(transaction.category.name, style: Theme.of(context).textTheme.caption),
           Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
         ],
       ),
@@ -59,12 +59,10 @@ class TransactionListItem extends StatelessWidget {
   }
 
   Container leading(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.caption?.copyWith(
-          fontWeight: FontWeight.w500,
-          color: Palette.textLight,
-        );
-    final isExpanse =  transaction.type == MyTransactionDataType.expanse;
-    final defaultIcon = isExpanse ? Icons.trending_down : Icons.trending_up;
+    // final textStyle = Theme.of(context).textTheme.caption?.copyWith(
+    //       fontWeight: FontWeight.w500,
+    //       color: Palette.textLight,
+    //     );
     return Container(
       height: 48,
       width: 48,
@@ -72,7 +70,7 @@ class TransactionListItem extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         color: Colors.grey.shade200,
       ),
-      child: Center(child: Icon(transaction.category?.icon ?? defaultIcon)),
+      child: Center(child: Icon(transaction.category.icon)),
       // child: Center(
       //   child: Column(
       //     mainAxisSize: MainAxisSize.min,

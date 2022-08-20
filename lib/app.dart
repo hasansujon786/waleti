@@ -15,12 +15,13 @@ class App extends StatelessWidget {
       // debugShowMaterialGrid: true,
       title: Constants.appName,
       theme: AppTheme.light,
-      home: AppAuthWrapper(
-        FirebaseAuth.instance,
-        loginView: const LoginView(),
-        authView: const RootNavigation(),
-      ),
+      home: const RootNavigation(),
       routes: appRoutes,
+      // home: AppAuthWrapper(
+      //   FirebaseAuth.instance,
+      //   loginView: const LoginView(),
+      //   authView: const RootNavigation(),
+      // ),
     );
   }
 }

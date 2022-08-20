@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
@@ -42,9 +43,10 @@ class MyTransaction extends HiveObject {
   @HiveField(5)
   String? _category;
   set category(TransactionCategory? ct) => _category = ct?.name;
-  TransactionCategory? get category {
+  TransactionCategory get category {
     if (_category == null) {
-      return null;
+      final defaultIcon = type == MyTransactionDataType.expanse ? Icons.trending_down : Icons.trending_up;
+      return TransactionCategory('Not listed', defaultIcon);
     }
     return transactionCategories.firstWhere((cg) => cg.name == _category);
   }

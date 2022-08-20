@@ -49,9 +49,9 @@ class TransactionListController extends StateNotifier<AsyncValue<List<MyTransact
   final String? _userId;
 
   TransactionListController(this._read, this._userId) : super(const AsyncValue.loading()) {
-    if (_userId != null) {
+    // if (_userId != null) {
       retrieveItems();
-    }
+    // }
   }
 
   Future<void> retrieveItems({bool isRefreshing = false}) async {

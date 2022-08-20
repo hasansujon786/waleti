@@ -5,24 +5,22 @@ import '../../../configs/configs.dart';
 import '../../../controllers/controllers.dart';
 import '../../../shared/ui/ui.dart';
 
-// const _bg = Colors.blue;
-const _bg = Color(0xffF8FAF7);
-
 class SliverHeader extends ConsumerWidget {
-  const SliverHeader({Key? key}) : super(key: key);
+  final Color bg;
+  const SliverHeader({Key? key, required this.bg}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     final transactions = ref.watch(filteredTransactionsListProvider);
 
     return SliverAppBar(
-      title: const Text(Constants.appName, style: TextStyle(color: _bg)),
+      title: Text(Constants.appName, style: TextStyle(color: bg)),
       expandedHeight: 320,
       pinned: true,
       stretch: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          color: _bg,
+          color: bg,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -57,8 +55,16 @@ class SliverHeader extends ConsumerWidget {
   }
 }
 
-class SliverListTopRCorner extends ConsumerWidget {
-  const SliverListTopRCorner({Key? key}) : super(key: key);
+class SliverListTopHeader extends ConsumerWidget {
+  final bool isTransactionsView;
+  final void Function(bool) toggleTransactioView;
+  final Color bg;
+  const SliverListTopHeader({
+    Key? key,
+    this.isTransactionsView = true,
+    required this.toggleTransactioView,
+    required this.bg,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -66,7 +72,7 @@ class SliverListTopRCorner extends ConsumerWidget {
     double height = 25;
     return SliverToBoxAdapter(
       child: ColoredBox(
-        color: _bg,
+        color: bg,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -80,12 +86,31 @@ class SliverListTopRCorner extends ConsumerWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Transactions'),
+                children: <Widget>[
+                  DropdownButton<bool>(
+                    onChanged: ((value) {
+                      if (value == null) return;
+                      toggleTransactioView(value);
+                    }),
+                    hint: Text(
+                      isTransactionsView ? 'Transactions' : 'Category',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    underline: const SizedBox(),
+                    // value: _showListView,
+                    items: const [
+                      DropdownMenuItem(
+                        value: true,
+                        child: Text('Transactions', style: TextStyle(fontSize: 14)),
+                      ),
+                      DropdownMenuItem(
+                        value: false,
+                        child: Text('Category', style: TextStyle(fontSize: 14)),
+                      ),
+                    ],
+                  ),
                   IconButton(
-                    onPressed: () {
-                      ref.read(transactionListControllerProvider.notifier).deleteAllTransactions();
-                    },
+                    onPressed: () => ref.read(transactionListControllerProvider.notifier).deleteAllTransactions(),
                     icon: const Icon(Icons.clear),
                   ),
                 ],
