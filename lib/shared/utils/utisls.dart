@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+export 'formatter.dart';
 
 Future<bool> checkIfDocExists(DocumentReference<Map<String, dynamic>> docRef) async {
   try {

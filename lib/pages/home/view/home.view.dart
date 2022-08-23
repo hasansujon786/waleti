@@ -14,7 +14,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool _isTransactionView = true;
+  bool _isTransactionView = false;
   void toggleTransactioView(bool value) {
     setState(() {
       _isTransactionView = value;
@@ -34,6 +34,7 @@ class _HomeViewState extends State<HomeView> {
             toggleTransactioView: toggleTransactioView,
           ),
           TransactionList(isTransactionsView: _isTransactionView),
+          const SliverToBoxAdapter(child: SizedBox(height: 40))
         ],
       ),
     );

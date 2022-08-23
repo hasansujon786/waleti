@@ -34,14 +34,18 @@ class MyTransaction extends HiveObject {
   double amount;
   @HiveField(3)
   DateTime createdAt;
-
   @HiveField(4)
   String _type;
-  set type(MyTransactionDataType value) => _type = value.name;
-  MyTransactionDataType get type => _type == 'expanse' ? MyTransactionDataType.expanse : MyTransactionDataType.income;
-
   @HiveField(5)
   String? _category;
+
+  // enum MyTransactionDataType
+  set type(MyTransactionDataType value) => _type = value.name;
+  MyTransactionDataType get type => _type == 'expanse' ? MyTransactionDataType.expanse : MyTransactionDataType.income;
+  bool get isTypeExpanse => type == MyTransactionDataType.expanse;
+  bool get isTypeIncome => type == MyTransactionDataType.income;
+
+  // TransactionCategory
   set category(TransactionCategory? ct) => _category = ct?.name;
   TransactionCategory get category {
     if (_category == null) {

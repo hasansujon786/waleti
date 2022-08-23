@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../shared/utils/formatter.dart';
 import '../../../configs/configs.dart';
 import '../../../models/models.dart';
+import '../../../shared/ui/ui.dart';
+import '../../../shared/utils/formatter.dart';
 
 class TransactionListItem extends StatelessWidget {
   final MyTransaction transaction;
@@ -21,65 +22,21 @@ class TransactionListItem extends StatelessWidget {
       onTap: onTap,
       horizontalTitleGap: 8,
       leading: leading(context),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(transaction.title, style: TextStyle(color: Palette.text)),
-          currency(),
-        ],
-      ),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(transaction.category.name, style: Theme.of(context).textTheme.caption),
-          Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
-        ],
-      ),
-    );
-  }
-
-  RichText currency() {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: TextStyle(color: Palette.text, fontWeight: FontWeight.w500),
-        children: [
-          TextSpan(text: transaction.type == MyTransactionDataType.income ? '+ ' : '- '),
-          const WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
-            child: Text(
-              '\$ ',
-              style: TextStyle(fontSize: 11),
-            ),
-          ),
-          TextSpan(text: '${transaction.amount}')
-        ],
-      ),
+      title: Text(transaction.category.name, style: TextStyle(color: Palette.text)),
+      subtitle: Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
+      trailing: CurrencyText.small(123.33, transaction.type),
     );
   }
 
   Container leading(BuildContext context) {
-    // final textStyle = Theme.of(context).textTheme.caption?.copyWith(
-    //       fontWeight: FontWeight.w500,
-    //       color: Palette.textLight,
-    //     );
     return Container(
       height: 48,
       width: 48,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        color: Colors.grey.shade200,
+        color: Colors.grey.shade100,
       ),
       child: Center(child: Icon(transaction.category.icon)),
-      // child: Center(
-      //   child: Column(
-      //     mainAxisSize: MainAxisSize.min,
-      //     children: [
-      //       Text('Jan', style: textStyle),
-      //       Text('25', style: textStyle),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

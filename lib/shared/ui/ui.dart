@@ -10,3 +10,4 @@ export 'line_chart_wrapper.dart';
 export 'bill_board.dart';
 export 'drop_down_btn_small.dart';
 export 'currency_text.dart';
+export 'double_dot.dart';

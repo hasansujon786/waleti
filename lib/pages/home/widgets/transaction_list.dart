@@ -41,7 +41,8 @@ class TransactionList extends ConsumerWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           final data = categoryData[categoryKeys[index]];
-          return Text('${data?.category.name} ${data?.total}');
+          if (data == null) return const SizedBox();
+          return CategoryListItem(data);
         },
         childCount: categoryKeys.length,
       ),
