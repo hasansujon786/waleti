@@ -51,12 +51,12 @@ class BottomNavBar extends StatelessWidget {
     return BottomAppBar(
       notchMargin: 6,
       shape: notchedShape,
+      color: backgroundColor ?? navbarTheme.backgroundColor,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: navItems,
       ),
-      color: backgroundColor ?? navbarTheme.backgroundColor,
     );
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:waleti/models/models.dart';
 
-import '../../../controllers/controllers.dart';
+import '../../../providers/providers.dart';
+import '../../../models/models.dart';
 
 class TransactionDetailsView extends ConsumerWidget {
   final String title;
@@ -44,6 +44,5 @@ class TransactionDetailsView extends ConsumerWidget {
         ),
       ),
     );
-    ;
   }
 }

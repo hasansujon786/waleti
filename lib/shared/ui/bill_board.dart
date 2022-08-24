@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/controllers.dart';
 import '../../extensions/date_time_extension.dart';
+import '../../providers/providers.dart';
 import '../utils/formatter.dart';
 import 'ui.dart';
 

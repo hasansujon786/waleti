@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../configs/configs.dart';
-import '../../controllers/controllers.dart';
+import '../../providers/providers.dart';
 import '../../models/models.dart';
 import '../../shared/utils/formatter.dart';
 

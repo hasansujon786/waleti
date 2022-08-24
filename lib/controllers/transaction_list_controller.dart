@@ -2,55 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/models.dart';
 import '../repositories/repositories.dart';
-import 'controllers.dart';
 
-enum TransactionListFilter { all, expanse, income }
+typedef AsyncTransactionsRef = AsyncValue<List<MyTransaction>>;
 
-final currentSelectedDayProvider = StateProvider<DateTime>((_) => DateTime.now());
-final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) => TransactionListFilter.expanse);
-
-final transactionsFilteredByTypeProvider = Provider<AsyncValue<List<MyTransaction>>>((ref) {
-  final allTransactions = ref.watch(transactionListControllerProvider);
-  final filterState = ref.watch(transactionListFilterProvider);
-
-  return allTransactions.whenData((items) {
-    List<MyTransaction> filteredItems = [];
-    switch (filterState) {
-      case TransactionListFilter.expanse:
-        filteredItems = items.where((item) => item.type == MyTransactionDataType.expanse).toList();
-        break;
-      case TransactionListFilter.income:
-        filteredItems = items.where((item) => item.type == MyTransactionDataType.income).toList();
-        break;
-      case TransactionListFilter.all:
-        filteredItems = items;
-        break;
-      default:
-        filteredItems = items;
-        break;
-    }
-
-    filteredItems.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    return filteredItems;
-  });
-});
-
-final transactionListControllerProvider =
-    StateNotifierProvider<TransactionListController, AsyncValue<List<MyTransaction>>>(
-  (ref) {
-    final user = ref.watch(authControllerProvider);
-    return TransactionListController(ref.read, user?.uid);
-  },
-);
-
-class TransactionListController extends StateNotifier<AsyncValue<List<MyTransaction>>> {
+class TransactionListController extends StateNotifier<AsyncTransactionsRef> {
   final Reader _read;
-  final String? _userId;
-
-  TransactionListController(this._read, this._userId) : super(const AsyncValue.loading()) {
-    // if (_userId != null) {
-      retrieveItems();
-    // }
+  TransactionListController(this._read) : super(const AsyncValue.loading()) {
+    // if (_userId != null) { }
+    retrieveItems();
   }
 
   Future<void> retrieveItems({bool isRefreshing = false}) async {
