@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controllers/controllers.dart';
+import '../../extensions/date_time_extension.dart';
+import '../utils/formatter.dart';
 import 'ui.dart';
 
 class BillBoard extends StatelessWidget {
@@ -22,11 +26,15 @@ class BillBoard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 4),
-              Text(
-                'Today',
-                // 'September 23, 2022',
-                style: textTheme.titleSmall,
-              ),
+              Consumer(builder: (context, ref, child) {
+                final date = ref.watch(currentSelectedDayProvider.state).state;
+                final leading = date.isToday
+                    ? 'Today, '
+                    : date.isYesterday
+                        ? 'Yesterday, '
+                        : '';
+                return Text('$leading${Formatters.monthDayFull.format(date)}', style: textTheme.titleSmall);
+              }),
               const SizedBox(height: 6),
               curBalanceTitle(textTheme),
               const SizedBox(height: 2),

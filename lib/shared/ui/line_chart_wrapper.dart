@@ -53,6 +53,7 @@ class LineChartWrapperState extends State<LineChartWrapper> {
   }
 
   List<ChartBarItemDataOfDay> get groupedTransactionValues {
+    final tileWidth = (MediaQuery.of(context).size.width - 8) / 7;
     final rightSideIndex = 6 - todayNameIndex;
     final now = DateTime.now();
 
@@ -69,9 +70,9 @@ class LineChartWrapperState extends State<LineChartWrapper> {
         }
 
         return ChartBarItemDataOfDay(
+          width: tileWidth,
+          dateTime: dateToCheck,
           isToday: dateToCheck.isToday,
-          day: dateToCheck.day,
-          dayName: DateFormat.E().format(dateToCheck),
           totalSpendingOfDay: totalsum,
           spendignPercentace: totalsum / totalSpendingOfWeek,
         );

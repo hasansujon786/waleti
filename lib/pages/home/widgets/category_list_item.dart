@@ -16,8 +16,8 @@ class CategoryListItem extends StatelessWidget {
         dividerColor: Colors.transparent,
         listTileTheme: const ListTileThemeData(minLeadingWidth: 8),
         expansionTileTheme: ExpansionTileThemeData(
-          iconColor: Palette.muted,
-          collapsedIconColor: Palette.muted,
+          iconColor: Colors.deepPurple[400],
+          collapsedIconColor: Palette.textMuted,
           textColor: Colors.deepPurple[400],
           collapsedTextColor: Colors.grey.shade700,
         ),

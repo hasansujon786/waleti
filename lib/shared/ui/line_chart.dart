@@ -1,7 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../configs/configs.dart';
+import '../../controllers/controllers.dart';
 import '../../models/models.dart';
+import '../../shared/utils/formatter.dart';
 
 class LineChartWeek extends StatelessWidget {
   final List<ChartBarItemDataOfDay> weeklyTransactionsData;
@@ -98,41 +102,54 @@ class LineChartWeek extends StatelessWidget {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     final index = value.toInt();
-   final info = weeklyTransactionsData[index]; 
+    final info = weeklyTransactionsData[index];
 
     return SideTitleWidget(
       space: 10,
       axisSide: meta.axisSide,
-      child: GestureDetector(
-        onTap: () => onUpdateViewIndex(index),
+      child: Consumer(
+        builder: (context, ref, child) => GestureDetector(
+          onTap: () {
+            // chage day view on user tap
+            ref.read(currentSelectedDayProvider.state).state = info.dateTime;
+            onUpdateViewIndex(index);
+          },
+          child: child,
+        ),
         child: SizedBox(
-          width: 44,
+          width: info.width,
           child: Column(
             children: [
               Text(
-                info.dayName,
-                style: const TextStyle(color: Color(0xff72719b), fontWeight: FontWeight.bold, fontSize: 12),
+                Formatters.dayName.format(info.dateTime),
+                style: const TextStyle(color: Color(0xff72719b), fontWeight: FontWeight.bold, fontSize: 10),
               ),
-              const SizedBox(height: 3),
+              const Spacer(),
               CircleAvatar(
-                backgroundColor: Colors.deepPurple.shade300.withOpacity(info.isToday ? 0.8 : 0),
+                backgroundColor: info.isToday ? Palette.primary.withOpacity(0.6) : Colors.transparent,
                 radius: 15,
                 child: Text(
-                  info.day.toString(),
+                  info.dateTime.day.toString(),
                   style: TextStyle(
-                    color: info.isToday ? Colors.white : Colors.deepPurple,
+                    color: info.isToday ? Colors.white : Palette.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
                 ),
               ),
-              const Spacer(),
-              Container(
-                width: 30,
-                height: 7,
-                decoration: BoxDecoration(
-                  color: currentDayViewIndex == index ? Colors.deepPurple.shade300 : Colors.transparent,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+              const SizedBox(height: 6.2),
+              AnimatedScale(
+                alignment: Alignment.center,
+                curve: Curves.fastOutSlowIn,
+                duration: const Duration(milliseconds: 280),
+                scale: currentDayViewIndex == index ? 1 : 0,
+                child: Container(
+                  height: 7,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: currentDayViewIndex == index ? Palette.primary.withOpacity(0.7) : Colors.transparent,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
                 ),
               ),
             ],
