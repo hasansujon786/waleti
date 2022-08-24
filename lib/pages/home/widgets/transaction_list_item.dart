@@ -8,18 +8,18 @@ import '../../../shared/utils/formatter.dart';
 
 class TransactionListItem extends StatelessWidget {
   final MyTransaction transaction;
-  final VoidCallback onTap;
+  final Function(MyTransaction) onItemTap;
   final dateFormater = DateFormat().add_yMMMd();
   TransactionListItem({
     Key? key,
+    required this.onItemTap,
     required this.transaction,
-    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: onTap,
+      onTap: () => onItemTap(transaction),
       horizontalTitleGap: 8,
       leading: leading(context),
       title: Text(transaction.category.name, style: TextStyle(color: Palette.text)),

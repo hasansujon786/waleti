@@ -91,12 +91,13 @@ class LineChartWrapperState extends State<LineChartWrapper> {
           children: <Widget>[
             const SizedBox(height: 8),
             BillBoard(
-              currentBalance: groupedTransactionValues[todayNameIndex].totalSpendingOfDay,
+              currentDaySelectedBalance: groupedTransactionValues[_currentDayViewIndex].totalSpendingOfDay,
             ),
             const SizedBox(height: 8),
             Expanded(
               child: widget.userTransactions.isEmpty
-                  ? const Center(child: Text('empty'))
+                  // if empty
+                  ? const SizedBox()
                   : LineChartWeek(
                       currentDayViewIndex: _currentDayViewIndex,
                       onUpdateViewIndex: updateCurrentDayViewIndex,

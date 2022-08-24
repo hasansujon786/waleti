@@ -9,7 +9,7 @@ enum TransactionListFilter { all, expanse, income }
 final currentSelectedDayProvider = StateProvider<DateTime>((_) => DateTime.now());
 final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) => TransactionListFilter.expanse);
 
-final filteredTransactionsListProvider = Provider<AsyncValue<List<MyTransaction>>>((ref) {
+final transactionsFilteredByTypeProvider = Provider<AsyncValue<List<MyTransaction>>>((ref) {
   final allTransactions = ref.watch(transactionListControllerProvider);
   final filterState = ref.watch(transactionListFilterProvider);
 

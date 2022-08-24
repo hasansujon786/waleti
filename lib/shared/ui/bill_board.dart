@@ -7,10 +7,10 @@ import '../utils/formatter.dart';
 import 'ui.dart';
 
 class BillBoard extends StatelessWidget {
-  final double currentBalance;
+  final double currentDaySelectedBalance;
   const BillBoard({
     Key? key,
-    required this.currentBalance,
+    required this.currentDaySelectedBalance,
   }) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class BillBoard extends StatelessWidget {
               const SizedBox(height: 6),
               curBalanceTitle(textTheme),
               const SizedBox(height: 2),
-              CurrencyText(currentBalance),
+              CurrencyText(currentDaySelectedBalance),
             ],
           ),
           Column(

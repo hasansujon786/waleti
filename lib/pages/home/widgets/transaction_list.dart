@@ -4,24 +4,40 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../controllers/controllers.dart';
 import '../../../models/models.dart';
 import '../../../pages/pages.dart';
+import '../../../extensions/date_time_extension.dart';
 import 'widgets.dart';
 
 class TransactionList extends ConsumerWidget {
   final bool isTransactionsView;
   const TransactionList({Key? key, this.isTransactionsView = true}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, ref) {
-    final filteredTransactions = ref.watch(filteredTransactionsListProvider);
-    return filteredTransactions.when(
-        data: (transactions) {
-          return isTransactionsView ? transactionViewbuilder(transactions, ref) : categoryViewBuilder(transactions);
-        },
-        error: (e, _) => buildSliverBoxCenter(const Text('error')),
-        loading: () => buildSliverBoxCenter(const Text('Loading...')));
+  void navigateToTransaction(BuildContext context, WidgetRef ref, MyTransaction item) async {
+    final deleteTransaction = await Navigator.of(context).pushNamed(
+      TransactionDetailsView.routeName,
+      arguments: item,
+    ) as MyTransaction?;
+    if (deleteTransaction != null) {
+      ref.read(transactionListControllerProvider.notifier).deleteItem(item: deleteTransaction);
+    }
   }
 
-  SliverList categoryViewBuilder(List<MyTransaction> transactions) {
+  @override
+  Widget build(BuildContext context, ref) {
+    final currentSelectedDay = ref.watch(currentSelectedDayProvider);
+    return ref.watch(transactionsFilteredByTypeProvider).when(
+          data: (transactions) {
+            final curDayTransactions =
+                transactions.where((item) => item.createdAt.isSameDayAs(currentSelectedDay)).toList();
+            return isTransactionsView
+                ? transactionViewbuilder(curDayTransactions, ref)
+                : categoryViewBuilder(curDayTransactions, ref);
+          },
+          error: (e, _) => buildSliverBoxCenter(const Text('error')),
+          loading: () => buildSliverBoxCenter(const Text('Loading...')),
+        );
+  }
+
+  SliverList categoryViewBuilder(List<MyTransaction> transactions, WidgetRef ref) {
     final categoryData = transactions.fold(<String, CatetoryItemData>{}, (Map<String, CatetoryItemData> acc, curItem) {
       final key = curItem.category.name;
       final entry = acc[key];
@@ -42,7 +58,10 @@ class TransactionList extends ConsumerWidget {
         (context, index) {
           final data = categoryData[categoryKeys[index]];
           if (data == null) return const SizedBox();
-          return CategoryListItem(data);
+          return CategoryListItem(
+            data,
+            onItemTap: (item) => navigateToTransaction(context, ref, item),
+          );
         },
         childCount: categoryKeys.length,
       ),
@@ -54,15 +73,7 @@ class TransactionList extends ConsumerWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) => TransactionListItem(
           transaction: transactions[index],
-          onTap: () async {
-            final deleteTransaction = await Navigator.of(context).pushNamed(
-              TransactionDetailsView.routeName,
-              arguments: transactions[index],
-            ) as MyTransaction?;
-            if (deleteTransaction != null) {
-              ref.read(transactionListControllerProvider.notifier).deleteItem(item: deleteTransaction);
-            }
-          },
+          onItemTap: (item) => navigateToTransaction(context, ref, item),
         ),
         childCount: transactions.length,
       ),

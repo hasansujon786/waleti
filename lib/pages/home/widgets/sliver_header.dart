@@ -11,7 +11,7 @@ class SliverHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final transactions = ref.watch(filteredTransactionsListProvider);
+    final transactions = ref.watch(transactionsFilteredByTypeProvider);
 
     return SliverAppBar(
       title: Text(Constants.appName, style: TextStyle(color: bg)),

@@ -7,7 +7,8 @@ import '../../../shared/utils/utisls.dart';
 
 class CategoryListItem extends StatelessWidget {
   final CatetoryItemData data;
-  const CategoryListItem(this.data, {Key? key}) : super(key: key);
+  final Function(MyTransaction) onItemTap;
+  const CategoryListItem(this.data, {Key? key, required this.onItemTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class CategoryListItem extends StatelessWidget {
 
   Widget innerItemTile(MyTransaction item, context) {
     return ListTile(
-      onTap: () => print('sdf'),
+      onTap: () => onItemTap(item),
       title: CurrencyText.small(item.amount, item.type),
       trailing: Text(Formatters.monthDay.format(item.createdAt), style: Theme.of(context).textTheme.caption),
     );
