@@ -13,19 +13,6 @@ final allExpanseTransactionsProvider = Provider<AsyncTransactionsRef>(
   (ref) => _filterByType(ref, MyTransactionDataType.expanse),
 );
 
-final transactionsFilteredByTypeProvider = Provider<AsyncTransactionsRef>((ref) {
-  final filterState = ref.watch(transactionListFilterProvider);
-  switch (filterState) {
-    case TransactionListFilter.expanse:
-      return ref.watch(allExpanseTransactionsProvider);
-    case TransactionListFilter.income:
-      return ref.watch(allIncomeTransactionsProvider);
-    case TransactionListFilter.all:
-    default:
-      return ref.watch(transactionListControllerProvider);
-  }
-});
-
 final transactionListControllerProvider = StateNotifierProvider<TransactionListController, AsyncTransactionsRef>(
   (ref) => TransactionListController(ref.read),
 );

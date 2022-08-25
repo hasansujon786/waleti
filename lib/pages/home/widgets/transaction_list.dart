@@ -24,7 +24,7 @@ class TransactionList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final currentSelectedDay = ref.watch(currentSelectedDayProvider);
-    return ref.watch(transactionsFilteredByTypeProvider).when(
+    return ref.watch(currentTransactionsFilterByWeek).when(
           data: (transactions) {
             final curDayTransactions =
                 transactions.where((item) => item.createdAt.isSameDayAs(currentSelectedDay)).toList();

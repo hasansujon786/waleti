@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../../models/models.dart';
 import '../../extensions/date_time_extension.dart';
+import '../../models/models.dart';
 import 'ui.dart';
 
 class LineChartWrapper extends StatefulWidget {
   final List<MyTransaction> userTransactions;
+  final int todayNameIndex;
   const LineChartWrapper({
     Key? key,
+    this.todayNameIndex = 0,
     required this.userTransactions,
   }) : super(key: key);
 
@@ -22,7 +23,7 @@ class LineChartWrapperState extends State<LineChartWrapper> {
   @override
   void initState() {
     super.initState();
-    _currentDayViewIndex = todayNameIndex;
+    _currentDayViewIndex = widget.todayNameIndex;
   }
 
   void updateCurrentDayViewIndex(int index) {
@@ -31,30 +32,13 @@ class LineChartWrapperState extends State<LineChartWrapper> {
     });
   }
 
-  List<MyTransaction> get thisWeekTransactions {
-    return widget.userTransactions
-        .where((tx) => tx.createdAt.isAfter(DateTime.now().subtract(Duration(days: todayNameIndex + 1))))
-        .toList();
-  }
-
   double get totalSpendingOfWeek {
-    return thisWeekTransactions.fold(0, (sum, item) => sum + item.amount);
-  }
-
-  DateTime get today {
-    final now = DateTime.now();
-    return DateTime(now.year, now.month, now.day);
-  }
-
-  int get todayNameIndex {
-    final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    final dayName = DateFormat.E().format(DateTime.now());
-    return days.indexWhere((element) => element == dayName);
+    return widget.userTransactions.fold(0, (sum, item) => sum + item.amount);
   }
 
   List<ChartBarItemDataOfDay> get groupedTransactionValues {
     final tileWidth = (MediaQuery.of(context).size.width - 8) / 7;
-    final rightSideIndex = 6 - todayNameIndex;
+    final rightSideIndex = 6 - widget.todayNameIndex;
     final now = DateTime.now();
 
     return List.generate(
@@ -63,9 +47,9 @@ class LineChartWrapperState extends State<LineChartWrapper> {
         final dateToCheck = now.subtract(Duration(days: index - rightSideIndex));
         double totalsum = 0.0;
 
-        for (var i = 0; i < thisWeekTransactions.length; i++) {
-          if (thisWeekTransactions[i].createdAt.isSameDayAs(dateToCheck)) {
-            totalsum += thisWeekTransactions[i].amount;
+        for (var i = 0; i < widget.userTransactions.length; i++) {
+          if (widget.userTransactions[i].createdAt.isSameDayAs(dateToCheck)) {
+            totalsum += widget.userTransactions[i].amount;
           }
         }
 
@@ -89,10 +73,7 @@ class LineChartWrapperState extends State<LineChartWrapper> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const SizedBox(height: 8),
-            BillBoard(
-              currentDaySelectedBalance: groupedTransactionValues[_currentDayViewIndex].totalSpendingOfDay,
-            ),
+            BillBoard(currentDaySelectedBalance: groupedTransactionValues[_currentDayViewIndex].totalSpendingOfDay),
             const SizedBox(height: 8),
             Expanded(
               child: widget.userTransactions.isEmpty

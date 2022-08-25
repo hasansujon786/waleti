@@ -25,6 +25,7 @@ class CategoryListItem extends StatelessWidget {
         // iconTheme: IconThemeData(size: 20)
       ),
       child: ExpansionTile(
+        key: UniqueKey(),
         controlAffinity: ListTileControlAffinity.leading,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

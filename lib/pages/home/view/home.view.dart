@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../configs/configs.dart';
 import '../widgets/widgets.dart';
 
 // const _bg = Colors.blue;
@@ -25,17 +26,25 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          const SliverHeader(bg: _bg),
-          SliverListTopHeader(
-            bg: _bg,
-            isTransactionsView: _isTransactionView,
-            toggleTransactioView: toggleTransactioView,
-          ),
-          TransactionList(isTransactionsView: _isTransactionView),
-          const SliverToBoxAdapter(child: SizedBox(height: 40))
-        ],
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            const SliverAppBar(
+              title: Text(Constants.appName, style: TextStyle(color: _bg)),
+              expandedHeight: 320,
+              pinned: true,
+              stretch: true,
+              flexibleSpace: SliverHeaderContent(bg: _bg),
+            ),
+            TransactionListHeader(
+              bg: _bg,
+              isTransactionsView: _isTransactionView,
+              toggleTransactioView: toggleTransactioView,
+            ),
+            TransactionList(isTransactionsView: _isTransactionView),
+            const SliverToBoxAdapter(child: SizedBox(height: 40))
+          ],
+        ),
       ),
     );
   }

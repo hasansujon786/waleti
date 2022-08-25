@@ -5,7 +5,7 @@ final _alignments = [Alignment.centerLeft, Alignment.centerRight];
 class OptionSwitch<T> extends StatelessWidget {
   final T value;
   final List<T> options;
-  final List<String> optionNames;
+  final List<Widget> optionNames;
   final Function(T) onSelect;
   final double margin;
 
@@ -59,9 +59,13 @@ class OptionSwitch<T> extends StatelessWidget {
                       color: Colors.transparent,
                       alignment: Alignment.center,
                       child: AnimatedDefaultTextStyle(
-                        style: TextStyle(color: i == selectedIndex ? Colors.white : Colors.black),
+                        style: TextStyle(
+                          color: i == selectedIndex ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                        ),
                         duration: const Duration(milliseconds: 200),
-                        child: Text(optionNames[i], style: const TextStyle(fontWeight: FontWeight.w500)),
+                        child: optionNames[i],
                       ),
                     ),
                   ),

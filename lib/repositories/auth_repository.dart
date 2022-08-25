@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../providers/general_providers.dart';
-import '../shared/utils/utisls.dart';
 import 'repositories.dart';
 
 abstract class BaseAuthRepository {
@@ -79,5 +79,15 @@ class AuthRepository implements BaseAuthRepository {
 
     // create new user doc
     userDoc.set({'createdAt': DateTime.now()});
+  }
+}
+
+Future<bool> checkIfDocExists(DocumentReference<Map<String, dynamic>> docRef) async {
+  try {
+    // Get reference to Firestore collection
+    var doc = await docRef.get();
+    return doc.exists;
+  } catch (e) {
+    rethrow;
   }
 }
