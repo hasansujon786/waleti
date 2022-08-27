@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../controllers/controllers.dart';
 import '../../../providers/providers.dart';
 import '../../../shared/ui/ui.dart';
-import '../../../shared/utils/dateTime_utils.dart';
 
 class SliverHeaderContent extends ConsumerWidget {
   final Color bg;
@@ -15,6 +15,7 @@ class SliverHeaderContent extends ConsumerWidget {
     final transactionListFilter = ref.watch(transactionListFilterProvider.state);
     final totalExpence = ref.watch(thisWeekTotalExpenceAmount);
     final totalIncome = ref.watch(thisWeekTotalIncomeAmount);
+    final currentWeekDates = ref.watch(weekViewControllerProvider);
 
     return transactionsRef.when(
       data: (transactions) => FlexibleSpaceBar(
@@ -25,7 +26,7 @@ class SliverHeaderContent extends ConsumerWidget {
             children: [
               Expanded(
                 child: LineChartWrapper(
-                  todayNameIndex: todayIndexFromWeek(),
+                  currentSelectedDates: currentWeekDates,
                   userTransactions: transactions,
                 ),
               ),

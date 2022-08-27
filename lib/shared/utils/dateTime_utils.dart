@@ -1,7 +1,10 @@
 import 'package:waleti/shared/utils/utisls.dart';
 
-int todayIndexFromWeek() {
+int weekIndex(DateTime date) {
   final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  final dayName = Formatters.dayName.format(DateTime.now());
-  return days.indexWhere((element) => element == dayName);
+  return days.indexWhere((e) => e == Formatters.dayName.format(date));
+}
+
+List<String> convertDates(List<DateTime> dates) {
+  return dates.map((e) => Formatters.monthDay.format(e)).toList();
 }

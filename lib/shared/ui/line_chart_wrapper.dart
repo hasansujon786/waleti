@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controllers/controllers.dart';
 import '../../extensions/date_time_extension.dart';
 import '../../models/models.dart';
+import '../../providers/providers.dart';
+import '../../shared/utils/utisls.dart';
 import 'ui.dart';
 
 class LineChartWrapper extends StatefulWidget {
-  final List<MyTransaction> userTransactions;
-  final int todayNameIndex;
   const LineChartWrapper({
     Key? key,
-    this.todayNameIndex = 0,
+    required this.currentSelectedDates,
     required this.userTransactions,
   }) : super(key: key);
+
+  final List<DateTime> currentSelectedDates;
+  final List<MyTransaction> userTransactions;
 
   @override
   State<StatefulWidget> createState() => LineChartWrapperState();
@@ -23,13 +28,7 @@ class LineChartWrapperState extends State<LineChartWrapper> {
   @override
   void initState() {
     super.initState();
-    _currentDayViewIndex = widget.todayNameIndex;
-  }
-
-  void updateCurrentDayViewIndex(int index) {
-    setState(() {
-      _currentDayViewIndex = index;
-    });
+    _currentDayViewIndex = weekIndex(DateTime.now());
   }
 
   double get totalSpendingOfWeek {
@@ -38,37 +37,41 @@ class LineChartWrapperState extends State<LineChartWrapper> {
 
   List<ChartBarItemDataOfDay> get groupedTransactionValues {
     final tileWidth = (MediaQuery.of(context).size.width - 8) / 7;
-    final rightSideIndex = 6 - widget.todayNameIndex;
-    final now = DateTime.now();
 
-    return List.generate(
-      7,
-      (index) {
-        final dateToCheck = now.subtract(Duration(days: index - rightSideIndex));
-        double totalsum = 0.0;
+    return widget.currentSelectedDates.map((dateToCheck) {
+      double sumOfDay = 0.0;
 
-        for (var i = 0; i < widget.userTransactions.length; i++) {
-          if (widget.userTransactions[i].createdAt.isSameDayAs(dateToCheck)) {
-            totalsum += widget.userTransactions[i].amount;
-          }
+      for (var i = 0; i < widget.userTransactions.length; i++) {
+        if (widget.userTransactions[i].createdAt.isSameDayAs(dateToCheck)) {
+          sumOfDay += widget.userTransactions[i].amount;
         }
+      }
 
-        return ChartBarItemDataOfDay(
-          width: tileWidth,
-          dateTime: dateToCheck,
-          isToday: dateToCheck.isToday,
-          totalSpendingOfDay: totalsum,
-          spendignPercentace: totalsum / totalSpendingOfWeek,
-        );
-      },
-    ).reversed.toList();
+      return ChartBarItemDataOfDay(
+        width: tileWidth,
+        dateTime: dateToCheck,
+        isToday: dateToCheck.isToday,
+        totalSpendingOfDay: sumOfDay,
+        spendignPercentace: sumOfDay / totalSpendingOfWeek,
+      );
+    }).toList();
+  }
+
+  void changeWeekBydiraction(bool isNext, WidgetRef ref, List<DateTime> currentWeek) {
+    if (isNext) {
+      ref.read(weekViewControllerProvider.notifier).getNextWeek(currentWeek);
+      // setState(() => _currentDayViewIndex = 0);
+    } else {
+      ref.read(weekViewControllerProvider.notifier).getPreviousWeek(currentWeek);
+      // setState(() => _currentDayViewIndex = currentWeek.length - 1);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.5, // 3/2
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,18 +79,53 @@ class LineChartWrapperState extends State<LineChartWrapper> {
             BillBoard(currentDaySelectedBalance: groupedTransactionValues[_currentDayViewIndex].totalSpendingOfDay),
             const SizedBox(height: 8),
             Expanded(
-              child: widget.userTransactions.isEmpty
-                  // if empty
-                  ? const SizedBox()
-                  : LineChartWeek(
-                      currentDayViewIndex: _currentDayViewIndex,
-                      onUpdateViewIndex: updateCurrentDayViewIndex,
-                      weeklyTransactionsData: groupedTransactionValues,
-                    ),
+              child: Consumer(
+                builder: (context, ref, child) => Stack(
+                  children: [
+                    widget.userTransactions.isEmpty
+                        ? const SizedBox()
+                        : LineChartWeek(
+                            currentDayViewIndex: _currentDayViewIndex,
+                            onUpdateViewIndex: (int index, DateTime selecTedDate) {
+                              ref.read(currentSelectedDayProvider.state).state = selecTedDate;
+                              setState(() => _currentDayViewIndex = index);
+                            },
+                            weeklyTransactionsData: groupedTransactionValues,
+                          ),
+                    viewControls(ref),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 2),
           ],
         ),
+      ),
+    );
+  }
+
+  Align viewControls(WidgetRef ref) {
+    final curWeek = ref.watch(weekViewControllerProvider);
+    return Align(
+      alignment: Alignment.topRight,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () => changeWeekBydiraction(false, ref, curWeek),
+            icon: const Icon(Icons.chevron_left),
+          ),
+          IconButton(
+            onPressed: () {
+              ref.read(weekViewControllerProvider.notifier).getThisWeek();
+              setState(() => _currentDayViewIndex = weekIndex(DateTime.now()));
+            },
+            icon: const Icon(Icons.calendar_today),
+          ),
+          IconButton(
+            onPressed: () => changeWeekBydiraction(true, ref, curWeek),
+            icon: const Icon(Icons.chevron_right),
+          )
+        ],
       ),
     );
   }

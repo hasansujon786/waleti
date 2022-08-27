@@ -1,16 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../configs/configs.dart';
-import '../../providers/providers.dart';
 import '../../models/models.dart';
 import '../../shared/utils/formatter.dart';
 
 class LineChartWeek extends StatelessWidget {
   final List<ChartBarItemDataOfDay> weeklyTransactionsData;
+  final Function(int, DateTime) onUpdateViewIndex;
   final int currentDayViewIndex;
-  final Function(int) onUpdateViewIndex;
   const LineChartWeek({
     Key? key,
     required this.weeklyTransactionsData,
@@ -107,15 +105,9 @@ class LineChartWeek extends StatelessWidget {
     return SideTitleWidget(
       space: 10,
       axisSide: meta.axisSide,
-      child: Consumer(
-        builder: (context, ref, child) => GestureDetector(
-          onTap: () {
-            // chage day view on user tap
-            ref.read(currentSelectedDayProvider.state).state = info.dateTime;
-            onUpdateViewIndex(index);
-          },
-          child: child,
-        ),
+      child: GestureDetector(
+        // chage day view on user tap
+        onTap: () => onUpdateViewIndex(index, info.dateTime),
         child: SizedBox(
           width: info.width,
           child: Column(
