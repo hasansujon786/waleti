@@ -7,7 +7,7 @@ import '../../shared/utils/formatter.dart';
 
 class LineChartWeek extends StatelessWidget {
   final List<ChartBarItemDataOfDay> weeklyTransactionsData;
-  final Function(int, DateTime) onUpdateViewIndex;
+  final void Function(int, DateTime) onUpdateViewIndex;
   final int currentDayViewIndex;
   const LineChartWeek({
     Key? key,
@@ -17,7 +17,7 @@ class LineChartWeek extends StatelessWidget {
   }) : super(key: key);
 
   List<double> get xValues => [0, 1, 2, 3, 4, 5, 6];
-  List<double> get yValues => weeklyTransactionsData.map((item) => item.spendignPercentace).toList();
+  List<double> get yValues => weeklyTransactionsData.map((item) => item.spendignPercentage).toList();
 
   @override
   Widget build(BuildContext context) {
