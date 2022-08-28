@@ -64,6 +64,10 @@ class LineChartWrapperState extends State<LineChartWrapper> {
     } else {
       ref.read(weekViewControllerProvider.notifier).getPreviousWeek(currentWeek);
     }
+    // TODO: <29.08.22> store the selecdate date data
+    // sync transacList with current day index view.
+    final updatedWeeks = ref.read(weekViewControllerProvider);
+    ref.read(currentSelectedDayProvider.state).state = updatedWeeks[_currentDayTransactionIdx];
   }
 
   void updateCurrentDateIdx(int index, DateTime selecTedDate, ref) {
@@ -82,7 +86,9 @@ class LineChartWrapperState extends State<LineChartWrapper> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            BillBoard(currentDaySelectedBalance: groupedTransactionValues[_currentDayTransactionIdx].totalSpendingOfDay),
+            BillBoard(
+              currentDaySelectedBalance: groupedTransactionValues[_currentDayTransactionIdx].totalSpendingOfDay,
+            ),
             const SizedBox(height: 8),
             Expanded(
               child: Consumer(
@@ -118,10 +124,8 @@ class LineChartWrapperState extends State<LineChartWrapper> {
           IconButton(
             onPressed: () {
               ref.read(weekViewControllerProvider.notifier).getThisWeek();
-              final idx = weekIndex(DateTime.now());
-              setState(() {
-                _currentDayTransactionIdx = idx;
-              });
+              final now = DateTime.now();
+              updateCurrentDateIdx(weekIndex(now), now, ref);
             },
             icon: const Icon(Icons.calendar_today),
           ),
