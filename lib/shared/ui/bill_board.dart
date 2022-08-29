@@ -6,16 +6,22 @@ import '../../providers/providers.dart';
 import '../utils/formatter.dart';
 import 'ui.dart';
 
-class BillBoard extends StatelessWidget {
-  final double currentDaySelectedBalance;
-  const BillBoard({
-    Key? key,
-    required this.currentDaySelectedBalance,
-  }) : super(key: key);
+class BillBoard extends ConsumerWidget {
+  const BillBoard({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final textTheme = Theme.of(context).textTheme;
+    final cDayTrans = ref.watch(transactionsFromCurrentSelectedDayProvider);
+    final curDaySelectedBalance = cDayTrans.value?.fold<double>(0, (sum, item) => sum + item.amount) ?? 0;
+
+    final date = ref.watch(currentSelectedDayProvider);
+    final leading = date.isToday
+        ? 'Today, '
+        : date.isYesterday
+            ? 'Yesterday, '
+            : '';
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
       child: Row(
@@ -25,19 +31,11 @@ class BillBoard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consumer(builder: (context, ref, child) {
-                final date = ref.watch(currentSelectedDayProvider.state).state;
-                final leading = date.isToday
-                    ? 'Today, '
-                    : date.isYesterday
-                        ? 'Yesterday, '
-                        : '';
-                return Text('$leading${Formatters.monthDayFull.format(date)}', style: textTheme.titleSmall);
-              }),
+              Text('$leading${Formatters.monthDayFull.format(date)}', style: textTheme.titleSmall),
               const SizedBox(height: 6),
               curBalanceTitle(textTheme),
               const SizedBox(height: 2),
-              CurrencyText(currentDaySelectedBalance),
+              CurrencyText(curDaySelectedBalance),
             ],
           ),
           Column(

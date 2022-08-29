@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 import '../../configs/configs.dart';
 import '../../models/models.dart';
 import '../../shared/utils/formatter.dart';
+import '../../extensions/date_time_extension.dart';
 
 class LineChartWeek extends StatelessWidget {
   final List<ChartBarItemDataOfDay> weeklyTransactionsData;
   final void Function(int, DateTime) onUpdateViewIndex;
-  final int currentDayViewIndex;
+  final DateTime selectedDay;
+  final double tileWidth;
   const LineChartWeek({
     Key? key,
     required this.weeklyTransactionsData,
     required this.onUpdateViewIndex,
-    this.currentDayViewIndex = 0,
+    required this.selectedDay,
+    required this.tileWidth,
   }) : super(key: key);
 
   List<double> get xValues => [0, 1, 2, 3, 4, 5, 6];
@@ -101,6 +104,7 @@ class LineChartWeek extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     final index = value.toInt();
     final info = weeklyTransactionsData[index];
+    final selected = selectedDay.isSameDayAs(info.dateTime);
 
     return SideTitleWidget(
       space: 10,
@@ -109,7 +113,7 @@ class LineChartWeek extends StatelessWidget {
         // chage day view on user tap
         onTap: () => onUpdateViewIndex(index, info.dateTime),
         child: SizedBox(
-          width: info.width,
+          width: tileWidth,
           child: Column(
             children: [
               Text(
@@ -134,12 +138,12 @@ class LineChartWeek extends StatelessWidget {
                 alignment: Alignment.center,
                 curve: Curves.fastOutSlowIn,
                 duration: const Duration(milliseconds: 280),
-                scale: currentDayViewIndex == index ? 1 : 0,
+                scale: selected ? 1 : 0,
                 child: Container(
                   height: 7,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: currentDayViewIndex == index ? Palette.primary.withOpacity(0.7) : Colors.transparent,
+                    color: selected ? Palette.primary.withOpacity(0.7) : Colors.transparent,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                   ),
                 ),

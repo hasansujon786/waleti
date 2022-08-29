@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:waleti/providers/providers.dart';
+
+import '../../../controllers/controllers.dart';
 
 class TransactionListHeader extends ConsumerWidget {
   final bool isTransactionsView;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/providers.dart';
+import '../../../controllers/controllers.dart';
 import '../../../models/models.dart';
 
 class TransactionDetailsView extends ConsumerWidget {

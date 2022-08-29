@@ -5,6 +5,10 @@ import '../repositories/repositories.dart';
 
 typedef AsyncTransactionsRef = AsyncValue<List<MyTransaction>>;
 
+final transactionListControllerProvider = StateNotifierProvider<TransactionListController, AsyncTransactionsRef>(
+  (ref) => TransactionListController(ref.read),
+);
+
 class TransactionListController extends StateNotifier<AsyncTransactionsRef> {
   final Reader _read;
   TransactionListController(this._read) : super(const AsyncValue.loading()) {

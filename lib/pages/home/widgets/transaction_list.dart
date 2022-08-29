@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/providers.dart';
+import '../../../controllers/controllers.dart';
 import '../../../models/models.dart';
 import '../../../pages/pages.dart';
-import '../../../extensions/date_time_extension.dart';
+import '../../../providers/providers.dart';
 import 'widgets.dart';
 
 class TransactionList extends ConsumerWidget {
@@ -23,11 +23,8 @@ class TransactionList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final currentSelectedDay = ref.watch(currentSelectedDayProvider);
-    return ref.watch(currentTransactionsFilterByWeek).when(
-          data: (transactions) {
-            final curDayTransactions =
-                transactions.where((item) => item.createdAt.isSameDayAs(currentSelectedDay)).toList();
+    return ref.watch(transactionsFromCurrentSelectedDayProvider).when(
+          data: (curDayTransactions) {
             return isTransactionsView
                 ? transactionViewbuilder(curDayTransactions, ref)
                 : categoryViewBuilder(curDayTransactions, ref);

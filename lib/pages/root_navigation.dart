@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../configs/configs.dart';
-import '../providers/providers.dart';
+import '../controllers/controllers.dart';
 import '../shared/ui/ui.dart';
 import 'pages.dart';
 
