@@ -19,6 +19,7 @@ class LineChartWrapper extends StatelessWidget {
   final List<MyTransaction> userTransactions;
 
   double get totalSpendingOfWeek {
+    // TODO: <30.08.22> use from provider
     return userTransactions.fold(0, (sum, item) => sum + item.amount);
   }
 

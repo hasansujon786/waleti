@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../configs/configs.dart';
 import '../controllers/controllers.dart';
 import '../shared/ui/ui.dart';
-import 'pages.dart';
+import 'screens.dart';
 
 class RootNavigation extends StatefulWidget {
   const RootNavigation({Key? key}) : super(key: key);

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/controllers.dart';
 import '../../../models/models.dart';
-import '../../../pages/pages.dart';
+import '../../../screens/screens.dart';
 import '../../../providers/providers.dart';
 import 'widgets.dart';
 
