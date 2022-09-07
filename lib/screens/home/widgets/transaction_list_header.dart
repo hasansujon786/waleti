@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/controllers.dart';
+import '../../../models/models.dart';
 import '../../../shared/ui/ui.dart';
 
 class TransactionListHeader extends ConsumerWidget {
@@ -68,10 +69,17 @@ class TransactionListHeader extends ConsumerWidget {
           case _PopupOptions.deleteAll:
             ref.read(transactionListControllerProvider.notifier).deleteAllTransactions();
             break;
+          case _PopupOptions.loadDemoItems:
+            ref.read(transactionListControllerProvider.notifier).addMultipleItems(items: myDemoTransactions);
+            break;
           default:
         }
       },
       itemBuilder: (contex) => [
+        const PopupMenuItem(
+          value: _PopupOptions.loadDemoItems,
+          child: PopupMenuItemData(icon: Icons.developer_board, text: 'Demo items'),
+        ),
         const PopupMenuItem(
           value: _PopupOptions.deleteAll,
           child: PopupMenuItemData(icon: Icons.clear, text: 'Delete all'),
@@ -82,4 +90,4 @@ class TransactionListHeader extends ConsumerWidget {
   }
 }
 
-enum _PopupOptions { deleteAll }
+enum _PopupOptions { deleteAll, loadDemoItems }

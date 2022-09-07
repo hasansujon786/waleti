@@ -8,6 +8,7 @@ abstract class BaseTransactionListRepository {
   Future<int> createItem({required MyTransaction item});
   Future<void> updateItem({required MyTransaction item});
   Future<void> deleteItem({required MyTransaction item});
+  Future<Iterable<int>> createMultipleItem({required List<MyTransaction> items});
   Future<void> cleanDatabase();
 }
 
@@ -34,6 +35,15 @@ class TransactionListLocalRepository implements BaseTransactionListRepository {
   Future<int> createItem({required MyTransaction item}) async {
     try {
       return await _box.add(item);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Iterable<int>> createMultipleItem({required List<MyTransaction> items}) async {
+    try {
+      return await _box.addAll(items);
     } catch (e) {
       rethrow;
     }

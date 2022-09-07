@@ -78,20 +78,69 @@ class MyTransaction extends HiveObject {
   }
 }
 
-final List<MyTransaction> demoTransactions = [
+final List<MyTransaction> myDemoTransactions = [
   MyTransaction(
-    id: 't1',
     type: MyTransactionDataType.expanse,
     amount: 70.0,
-    createdAt: DateTime.now().subtract(const Duration(days: 1)),
+    createdAt: DateTime.now(),
   ),
   MyTransaction(
-    id: 't2',
+    type: MyTransactionDataType.expanse,
+    amount: 20.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 170.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 120.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 40.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 10.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 5.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 90.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 100.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 70.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
+    amount: 70.0,
+    createdAt: DateTime.now(),
+  ),
+  MyTransaction(
+    type: MyTransactionDataType.expanse,
     amount: 50.0,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),
   MyTransaction(
-    id: 't1',
+    type: MyTransactionDataType.income,
     amount: 70.0,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),

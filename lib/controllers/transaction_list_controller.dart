@@ -38,6 +38,15 @@ class TransactionListController extends StateNotifier<AsyncTransactionsRef> {
     }
   }
 
+  Future<void> addMultipleItems({required List<MyTransaction> items}) async {
+    try {
+      await _read(transactionListLocalRepositoryProvider).createMultipleItem(items: items);
+      state.whenData((oldItems) => state = AsyncValue.data([...items, ...oldItems]));
+    } catch (e) {
+      state = AsyncValue.error(e);
+    }
+  }
+
   Future<void> deleteItem({required MyTransaction item}) async {
     try {
       await _read(transactionListLocalRepositoryProvider).deleteItem(item: item);
