@@ -24,7 +24,7 @@ class TransactionListItem extends StatelessWidget {
       leading: leading(context),
       title: Text(transaction.category.name, style: TextStyle(color: Palette.text)),
       subtitle: Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
-      trailing: CurrencyText.small(123.33, transaction.type),
+      trailing: CurrencyText.small(transaction.amount, transaction.type),
     );
   }
 

@@ -24,21 +24,21 @@ class CreateTransactionModal extends StatefulWidget {
 }
 
 class _CreateTransactionModalState extends State<CreateTransactionModal> {
-  final _titleConroller = TextEditingController(text: 'Title text');
+  final _descriptionTextConroller = TextEditingController(text: 'Title text');
   final _amountConroller = TextEditingController(text: '234');
   TransactionCategory? _transactionCategory;
   var _transactionType = MyTransactionDataType.expanse;
   DateTime _choosenDate = DateTime.now();
 
   void _onSubmitData() {
-    if (_titleConroller.text.isEmpty || _amountConroller.text.isEmpty) return;
-    final title = _titleConroller.text;
+    if (_descriptionTextConroller.text.isEmpty || _amountConroller.text.isEmpty) return;
+    final description = _descriptionTextConroller.text;
     final amount = double.parse(_amountConroller.text);
-    if (title.isEmpty || amount <= 0) {
+    if (description.isEmpty || amount <= 0) {
       return;
     }
     final newTx = MyTransaction(
-      title: title,
+      description: description,
       amount: amount,
       createdAt: _choosenDate,
       category: _transactionCategory,
@@ -65,7 +65,7 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      heightFactor: 0.8,
+      heightFactor: 0.7,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
@@ -75,20 +75,20 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
             TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'What is the reason of your expanse?',
-              ),
-              controller: _titleConroller,
-              /* onSubmitted: (_) => _onSubmitData(), */
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'What is the amount of your expanse?',
+                labelText: 'Amount',
               ),
               controller: _amountConroller,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
+            // const SizedBox(height: 12),
+            // TextField(
+            //   decoration: const InputDecoration(
+            //     border: OutlineInputBorder(),
+            //     labelText: 'Description',
+            //   ),
+            //   controller: _descriptionTextConroller,
+            //   /* onSubmitted: (_) => _onSubmitData(), */
+            // ),
             const SizedBox(height: 10),
             datePickerView(context),
             transactionCategoryPickerView(context),

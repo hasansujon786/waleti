@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/controllers.dart';
+import '../../../shared/ui/ui.dart';
 
 class TransactionListHeader extends ConsumerWidget {
   final bool isTransactionsView;
@@ -26,41 +27,24 @@ class TransactionListHeader extends ConsumerWidget {
           children: [
             Container(
               width: mq.size.width,
-              padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+              padding: const EdgeInsets.fromLTRB(20, 8, 8, 4),
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.grey.shade200),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(height)),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  DropdownButton<bool>(
-                    onChanged: ((value) {
-                      if (value == null) return;
-                      toggleTransactioView(value);
-                    }),
-                    hint: Text(
-                      isTransactionsView ? 'Transactions' : 'Category',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    underline: const SizedBox(),
-                    // value: _showListView,
-                    items: const [
-                      DropdownMenuItem(
-                        value: true,
-                        child: Text('Transactions', style: TextStyle(fontSize: 14)),
-                      ),
-                      DropdownMenuItem(
-                        value: false,
-                        child: Text('Category', style: TextStyle(fontSize: 14)),
-                      ),
-                    ],
+                  Text(
+                    isTransactionsView ? 'Transactions' : 'Category',
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
-                  IconButton(
-                    onPressed: () => ref.read(transactionListControllerProvider.notifier).deleteAllTransactions(),
-                    icon: const Icon(Icons.clear),
+                  const Spacer(),
+                  CircularButton(
+                    icon: Icon(isTransactionsView ? Icons.list_alt : Icons.list),
+                    onPressed: () => toggleTransactioView(!isTransactionsView),
                   ),
+                  moreButton(ref)
                 ],
               ),
             ),
@@ -76,4 +60,26 @@ class TransactionListHeader extends ConsumerWidget {
       ),
     );
   }
+
+  Widget moreButton(WidgetRef ref) {
+    return PopupMenuButton<_PopupOptions>(
+      onSelected: (value) {
+        switch (value) {
+          case _PopupOptions.deleteAll:
+            ref.read(transactionListControllerProvider.notifier).deleteAllTransactions();
+            break;
+          default:
+        }
+      },
+      itemBuilder: (contex) => [
+        const PopupMenuItem(
+          value: _PopupOptions.deleteAll,
+          child: PopupMenuItemData(icon: Icons.clear, text: 'Delete all'),
+        ),
+      ],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
 }
+
+enum _PopupOptions { deleteAll }

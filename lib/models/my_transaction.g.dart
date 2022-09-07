@@ -17,8 +17,8 @@ class MyTransactionAdapter extends TypeAdapter<MyTransaction> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MyTransaction(
-      title: fields[1] as String,
       amount: fields[2] as double,
+      description: fields[1] as String?,
       createdAt: fields[3] as DateTime?,
       id: fields[0] as String?,
     )
@@ -33,7 +33,7 @@ class MyTransactionAdapter extends TypeAdapter<MyTransaction> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.title)
+      ..write(obj.description)
       ..writeByte(2)
       ..write(obj.amount)
       ..writeByte(3)

@@ -9,6 +9,8 @@ import 'screens.dart';
 class RootNavigation extends StatefulWidget {
   const RootNavigation({Key? key}) : super(key: key);
 
+  static const routeName = '/';
+
   @override
   State<RootNavigation> createState() => _RootNavigationState();
 }
@@ -16,8 +18,8 @@ class RootNavigation extends StatefulWidget {
 class _RootNavigationState extends State<RootNavigation> {
   static const List<Widget> _screens = <Widget>[
     HomeView(title: Constants.appName),
-    TestView(title: 'one'),
-    TestView(title: 'two'),
+    TestView(title: 'Wallet'),
+    TestView(title: 'Goals'),
     SettingView(),
   ];
 

@@ -15,7 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool _isTransactionView = false;
+  bool _isTransactionView = true;
   void toggleTransactioView(bool value) {
     setState(() {
       _isTransactionView = value;

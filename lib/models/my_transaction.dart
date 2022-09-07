@@ -15,8 +15,8 @@ var _uuid = const Uuid();
 @HiveType(typeId: 1)
 class MyTransaction extends HiveObject {
   MyTransaction({
-    required this.title,
     required this.amount,
+    this.description,
     TransactionCategory? category,
     DateTime? createdAt,
     String? id,
@@ -29,7 +29,7 @@ class MyTransaction extends HiveObject {
   @HiveField(0)
   String id;
   @HiveField(1)
-  String title;
+  String? description;
   @HiveField(2)
   double amount;
   @HiveField(3)
@@ -58,19 +58,19 @@ class MyTransaction extends HiveObject {
   factory MyTransaction.fromJson(Map<String, dynamic> json) {
     return MyTransaction(
       id: json['id'],
-      title: json['title'],
+      description: json['description'],
       amount: json['amount'],
       type: MyTransactionDataType.values.firstWhere((e) => describeEnum(e) == json['type']),
       createdAt: (json['createdAt'] as Timestamp).toDate(),
     );
   }
 
-  factory MyTransaction.empty() => MyTransaction(title: '', amount: 0);
+  factory MyTransaction.empty() => MyTransaction(description: '', amount: 0);
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
+      'description': description,
       'amount': amount,
       'createdAt': createdAt,
       'type': type.name,
@@ -81,20 +81,17 @@ class MyTransaction extends HiveObject {
 final List<MyTransaction> demoTransactions = [
   MyTransaction(
     id: 't1',
-    title: 'Title text',
     type: MyTransactionDataType.expanse,
     amount: 70.0,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),
   MyTransaction(
     id: 't2',
-    title: 'Weekly Groceries',
     amount: 50.0,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),
   MyTransaction(
     id: 't1',
-    title: 'Untitled',
     amount: 70.0,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),
