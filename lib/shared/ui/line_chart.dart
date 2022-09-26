@@ -95,7 +95,7 @@ class LineChartWeek extends StatelessWidget {
           sideTitles: SideTitles(
             interval: 1,
             showTitles: true,
-            reservedSize: 70,
+            reservedSize: 78,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
@@ -115,25 +115,28 @@ class LineChartWeek extends StatelessWidget {
         child: SizedBox(
           width: tileWidth,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                Formatters.dayName.format(info.dateTime),
-                style: const TextStyle(color: Color(0xff72719b), fontWeight: FontWeight.bold, fontSize: 10),
+                Formatters.dayName.format(info.dateTime).toUpperCase(),
+                style: TextStyle(
+                  color: info.isToday ? Colors.white : Colors.white60,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,
+                ),
               ),
-              const Spacer(),
               CircleAvatar(
-                backgroundColor: info.isToday ? Palette.primary.withOpacity(0.6) : Colors.transparent,
-                radius: 15,
+                backgroundColor: info.isToday ? Color(hexColor('#49228d')) : Colors.transparent,
+                radius: 18,
                 child: Text(
                   info.dateTime.day.toString(),
                   style: TextStyle(
-                    color: info.isToday ? Colors.white : Palette.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    color: info.isToday || selected ? Colors.white : Colors.white60,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
                   ),
                 ),
               ),
-              const SizedBox(height: 6.2),
               AnimatedScale(
                 alignment: Alignment.center,
                 curve: Curves.fastOutSlowIn,
@@ -143,7 +146,7 @@ class LineChartWeek extends StatelessWidget {
                   height: 7,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: selected ? Palette.primary.withOpacity(0.7) : Colors.transparent,
+                    color: selected ? Color(hexColor('#4184ff')) : Colors.transparent,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                   ),
                 ),

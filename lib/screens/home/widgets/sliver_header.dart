@@ -5,9 +5,9 @@ import '../../../controllers/controllers.dart';
 import '../../../providers/providers.dart';
 import '../../../shared/ui/ui.dart';
 
-class SliverHeaderContent extends ConsumerWidget {
+class HomeDashboard extends ConsumerWidget {
   final Color bg;
-  const SliverHeaderContent({Key? key, required this.bg}) : super(key: key);
+  const HomeDashboard({Key? key, required this.bg}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -24,21 +24,22 @@ class SliverHeaderContent extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const SizedBox(height: 70),
               Expanded(
                 child: LineChartWrapper(
                   currentSelectedDates: currentWeekDates,
                   userTransactions: transactions,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: OptionSwitch<TransactionListFilter>(
-                  value: transactionListFilter.state,
-                  onSelect: (selected) => transactionListFilter.state = selected,
-                  optionNames: [option('Expanse', totalExpence), option('Income', totalIncome)],
-                  options: const [TransactionListFilter.expanse, TransactionListFilter.income],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+              //   child: OptionSwitch<TransactionListFilter>(
+              //     value: transactionListFilter.state,
+              //     onSelect: (selected) => transactionListFilter.state = selected,
+              //     optionNames: [option('Expanse', totalExpence), option('Income', totalIncome)],
+              //     options: const [TransactionListFilter.expanse, TransactionListFilter.income],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -48,22 +49,24 @@ class SliverHeaderContent extends ConsumerWidget {
     );
   }
 
-  Widget option(String title, AsyncValue<double> amount) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(title),
-          const SizedBox(height: 3),
-          Opacity(
-            opacity: 0.6,
-            child: Text(
-              '\$ ${amount.value}',
-              style: const TextStyle(
-                fontSize: 10,
-                letterSpacing: 0.3,
-                fontWeight: FontWeight.w700,
-              ),
+  Widget option(String title, AsyncValue<double> amount) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(title),
+        const SizedBox(height: 3),
+        Opacity(
+          opacity: 0.6,
+          child: Text(
+            '\$ ${amount.value}',
+            style: const TextStyle(
+              fontSize: 10,
+              letterSpacing: 0.3,
+              fontWeight: FontWeight.w700,
             ),
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 }

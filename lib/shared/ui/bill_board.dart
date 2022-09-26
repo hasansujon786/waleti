@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../extensions/date_time_extension.dart';
 import '../../providers/providers.dart';
-import '../utils/formatter.dart';
 import 'ui.dart';
 
 class BillBoard extends ConsumerWidget {
@@ -13,14 +11,7 @@ class BillBoard extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final textTheme = Theme.of(context).textTheme;
     final cDayTrans = ref.watch(transactionsFromCurrentSelectedDayProvider);
-    final curDaySelectedBalance = cDayTrans.value?.fold<double>(0, (sum, item) => sum + item.amount) ?? 0;
-
-    final date = ref.watch(currentSelectedDayProvider);
-    final leading = date.isToday
-        ? 'Today, '
-        : date.isYesterday
-            ? 'Yesterday, '
-            : '';
+    final curSelectedDayBalance = cDayTrans.value?.fold<double>(0, (sum, item) => sum + item.amount) ?? 0;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
@@ -31,22 +22,21 @@ class BillBoard extends ConsumerWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('$leading${Formatters.monthDayFull.format(date)}', style: textTheme.titleSmall),
               const SizedBox(height: 6),
               curBalanceTitle(textTheme),
               const SizedBox(height: 2),
-              CurrencyText(curDaySelectedBalance),
+              CurrencyText(curSelectedDayBalance),
             ],
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text('My Account', style: textTheme.labelSmall?.copyWith(color: Colors.grey.shade600)),
-              userAccount(textTheme),
-              const SizedBox(height: 2),
-              const DropDownBtnSmall()
-            ],
-          ),
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.end,
+          //   children: [
+          //     Text('My Account', style: textTheme.labelSmall?.copyWith(color: Colors.grey.shade600)),
+          //     userAccount(textTheme),
+          //     const SizedBox(height: 2),
+          //     const DropDownBtnSmall()
+          //   ],
+          // ),
         ],
       ),
     );

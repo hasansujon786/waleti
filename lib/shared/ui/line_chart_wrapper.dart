@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/controllers.dart';
+import '../../extensions/date_time_extension.dart';
 import '../../models/models.dart';
 import '../../providers/providers.dart';
-import '../../shared/utils/utisls.dart';
-import '../../extensions/date_time_extension.dart';
 import 'ui.dart';
 
 class LineChartWrapper extends StatelessWidget {
@@ -43,18 +41,6 @@ class LineChartWrapper extends StatelessWidget {
     }).toList();
   }
 
-  void changeWeekBydiraction(bool isNext, WidgetRef ref, List<DateTime> currentWeek) {
-    if (isNext) {
-      ref.read(weekViewControllerProvider.notifier).getNextWeek(currentWeek);
-    } else {
-      ref.read(weekViewControllerProvider.notifier).getPreviousWeek(currentWeek);
-    }
-  }
-
-  void updateCurrentDateIdx(int index, DateTime selecTedDate, ref) {
-    ref.read(currentSelectedDayProvider.state).state = selecTedDate;
-  }
-
   @override
   Widget build(BuildContext context) {
     final tileWidth = (MediaQuery.of(context).size.width - 8) / 7;
@@ -70,49 +56,19 @@ class LineChartWrapper extends StatelessWidget {
             const SizedBox(height: 8),
             Expanded(
               child: Consumer(
-                builder: (context, ref, child) => Stack(
-                  children: [
-                    LineChartWeek(
-                      tileWidth: tileWidth,
-                      selectedDay: ref.watch(currentSelectedDayProvider),
-                      onUpdateViewIndex: (idx, selectedDate) => updateCurrentDateIdx(idx, selectedDate, ref),
-                      weeklyTransactionsData: groupedTransactionValues,
-                    ),
-                    viewControls(ref),
-                  ],
+                builder: (context, ref, child) => LineChartWeek(
+                  tileWidth: tileWidth,
+                  selectedDay: ref.watch(currentSelectedDayProvider),
+                  onUpdateViewIndex: (idx, selectedDate) {
+                    ref.read(currentSelectedDayProvider.state).state = selectedDate;
+                  },
+                  weeklyTransactionsData: groupedTransactionValues,
                 ),
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
-      ),
-    );
-  }
-
-  Align viewControls(WidgetRef ref) {
-    final curWeek = ref.watch(weekViewControllerProvider);
-    return Align(
-      alignment: Alignment.topRight,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: () => changeWeekBydiraction(false, ref, curWeek),
-            icon: const Icon(Icons.chevron_left),
-          ),
-          IconButton(
-            onPressed: () {
-              ref.read(weekViewControllerProvider.notifier).getThisWeek();
-              final now = DateTime.now();
-              updateCurrentDateIdx(weekIndex(now), now, ref);
-            },
-            icon: const Icon(Icons.calendar_today),
-          ),
-          IconButton(
-            onPressed: () => changeWeekBydiraction(true, ref, curWeek),
-            icon: const Icon(Icons.chevron_right),
-          )
-        ],
       ),
     );
   }
