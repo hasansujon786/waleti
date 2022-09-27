@@ -23,7 +23,7 @@ class BillBoard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 6),
-              curBalanceTitle(textTheme),
+              curBalanceTitle(textTheme, true),
               const SizedBox(height: 2),
               CurrencyText(curSelectedDayBalance),
             ],
@@ -58,20 +58,14 @@ class BillBoard extends ConsumerWidget {
     );
   }
 
-  RichText curBalanceTitle(TextTheme textTheme) {
+  RichText curBalanceTitle(TextTheme textTheme, isExpanse) {
+    final color = isExpanse ? Colors.red.shade300 : Colors.green.shade500;
     return RichText(
       text: TextSpan(
-        style: textTheme.labelSmall?.copyWith(color: Colors.black54),
+        style: textTheme.labelSmall?.copyWith(color: color),
         children: [
-          TextSpan(
-            text: '●',
-            style: TextStyle(
-              fontSize: 14,
-              height: 0.5,
-              color: Colors.red[300],
-            ),
-          ),
-          const TextSpan(text: ' Total Expanse'),
+          TextSpan(text: '●', style: TextStyle(fontSize: 14, height: 0.5, color: color.withOpacity(0.8))),
+          TextSpan(text: ' Total ${isExpanse ? "Expanse" : "Income"}'),
         ],
       ),
     );

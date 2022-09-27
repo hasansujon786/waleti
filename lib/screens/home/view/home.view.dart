@@ -93,18 +93,19 @@ class HomeAppBar extends ConsumerWidget {
 
   Widget buildCurrentDate(BuildContext context, WidgetRef ref) {
     final date = ref.watch(currentSelectedDayProvider);
-    final dateFormated = Formatters.monthDay.format(date);
-    final leading = date.isToday
+    final title = date.isToday
         ? 'TODAY'
         : date.isYesterday
             ? 'YESTERDAY'
-            : null;
+            : Formatters.monthDay.format(date).toUpperCase();
+
+    final subtitle = date.isToday || date.isYesterday ? Formatters.monthDay : Formatters.dayNameFull;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          leading ?? dateFormated.toUpperCase(),
+          title,
           style: const TextStyle(
             fontWeight: FontWeight.w800,
             fontSize: 20,
@@ -113,8 +114,8 @@ class HomeAppBar extends ConsumerWidget {
         ),
         const SizedBox(height: 2),
         Text(
-          Formatters.monthDay.format(date),
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white54),
+          subtitle.format(date),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey.shade400),
         ),
       ],
     );

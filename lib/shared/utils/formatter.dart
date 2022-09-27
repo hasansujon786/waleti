@@ -6,4 +6,5 @@ class Formatters {
   static final monthDay = DateFormat().add_MMMd();
   static final monthDayFull = DateFormat().add_MMMMd();
   static final dayName = DateFormat.E();
+  static final dayNameFull = DateFormat.EEEE();
 }

@@ -27,7 +27,7 @@ class CurrencyText extends StatelessWidget {
   }
 
   Widget largeText(List<String> currency, TextTheme textTheme) {
-    final superScriptStyle = textTheme.headline6?.copyWith(color: Palette.textLight, fontSize: superScriptSize);
+    final superScriptStyle = textTheme.headline6?.copyWith(color: Colors.white70, fontSize: superScriptSize);
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +36,7 @@ class CurrencyText extends StatelessWidget {
         Text(
           currency[0],
           style: textTheme.headline4?.copyWith(
-            color: Colors.grey.shade800,
+            color: Colors.grey.shade300,
             height: 1.1,
             fontSize: mainTextSize,
           ),
