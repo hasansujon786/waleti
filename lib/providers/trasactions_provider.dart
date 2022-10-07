@@ -6,12 +6,12 @@ import '../models/models.dart';
 import 'providers.dart';
 
 final currentSelectedDayProvider = StateProvider<DateTime>((_) => DateTime.now());
-final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) => TransactionListFilter.expanse);
+final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) => TransactionListFilter.all);
 
 final transactionsFromCurrentSelectedDayProvider = Provider<AsyncTransactionsRef>((ref) {
   final selectedDay = ref.watch(currentSelectedDayProvider);
   return ref
-      .watch(currentTransactionsFilterByWeek)
+      .watch(filteredTransactionsByWeek)
       .whenData((value) => value.where((item) => item.createdAt.isSameDayAs(selectedDay)).toList());
 });
 

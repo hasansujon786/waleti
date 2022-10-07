@@ -11,10 +11,10 @@ class HomeDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final transactionsRef = ref.watch(currentTransactionsFilterByWeek);
+    final transactionsRef = ref.watch(filteredTransactionsByWeek);
     final transactionListFilter = ref.watch(transactionListFilterProvider.state);
-    final totalExpence = ref.watch(thisWeekTotalExpenceAmount);
-    final totalIncome = ref.watch(thisWeekTotalIncomeAmount);
+    final totalExpence = ref.watch(totalExpenceOfSelectedWeek);
+    final totalIncome = ref.watch(totalIncomeOfSelectedWeek);
     final currentWeekDates = ref.watch(weekViewControllerProvider);
 
     return transactionsRef.when(
@@ -31,6 +31,7 @@ class HomeDashboard extends ConsumerWidget {
                   userTransactions: transactions,
                 ),
               ),
+              // TODO: <08.10.22> decide what to do with this switch
               // Padding(
               //   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
               //   child: OptionSwitch<TransactionListFilter>(

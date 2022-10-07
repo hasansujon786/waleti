@@ -5,37 +5,43 @@ import '../controllers/controllers.dart';
 import '../extensions/date_time_extension.dart';
 import '../models/models.dart';
 
-final currentTransactionsFilterByWeek = Provider<AsyncTransactionsRef>((ref) {
+final filteredTransactionsByWeek = Provider<AsyncTransactionsRef>((ref) {
   final filterState = ref.watch(transactionListFilterProvider);
   switch (filterState) {
     case TransactionListFilter.expanse:
-      return ref.watch(thisWeekAllExpenceTransactions);
+      return ref.watch(expanseTransactionsFromSelectedWeek);
     case TransactionListFilter.income:
-      return ref.watch(thisWeekAllIncomeTransactions);
+      return ref.watch(incomeTransactionsFromSelectedWeek);
     case TransactionListFilter.all:
     default:
-      return ref.watch(transactionListControllerProvider);
+      return ref.watch(transactionsFromSelectedWeek);
   }
 });
 
-final thisWeekAllExpenceTransactions = Provider<AsyncTransactionsRef>(
+final transactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
+  (ref) => ref
+      .watch(transactionListControllerProvider)
+      .whenData((value) => _filterByWeek(value, ref.watch(weekViewControllerProvider))),
+);
+
+final expanseTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
   (ref) => ref
       .watch(allExpanseTransactionsProvider)
       .whenData((value) => _filterByWeek(value, ref.watch(weekViewControllerProvider))),
 );
 
-final thisWeekAllIncomeTransactions = Provider<AsyncTransactionsRef>(
+final incomeTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
   (ref) => ref
       .watch(allIncomeTransactionsProvider)
       .whenData((value) => _filterByWeek(value, ref.watch(weekViewControllerProvider))),
 );
 
-final thisWeekTotalExpenceAmount = Provider<AsyncValue<double>>(
-  (ref) => ref.watch(thisWeekAllExpenceTransactions).whenData(_calculateTotalAmount),
+final totalExpenceOfSelectedWeek = Provider<AsyncValue<double>>(
+  (ref) => ref.watch(expanseTransactionsFromSelectedWeek).whenData(_calculateTotalAmount),
 );
 
-final thisWeekTotalIncomeAmount = Provider<AsyncValue<double>>(
-  (ref) => ref.watch(thisWeekAllIncomeTransactions).whenData(_calculateTotalAmount),
+final totalIncomeOfSelectedWeek = Provider<AsyncValue<double>>(
+  (ref) => ref.watch(incomeTransactionsFromSelectedWeek).whenData(_calculateTotalAmount),
 );
 
 // ================================================
