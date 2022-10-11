@@ -19,7 +19,7 @@ class _RootNavigationState extends State<RootNavigation> {
   static const List<Widget> _screens = <Widget>[
     HomeView(title: Constants.appName),
     TestView(title: 'Wallet'),
-    TestView(title: 'Goals'),
+    GoalsView(),
     SettingView(),
   ];
 
