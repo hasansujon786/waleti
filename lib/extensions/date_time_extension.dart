@@ -1,3 +1,5 @@
+import '../shared/utils/utisls.dart';
+
 extension DateUtils on DateTime {
   bool get isToday {
     final now = DateTime.now();
@@ -16,6 +18,15 @@ extension DateUtils on DateTime {
 
   bool isSameDayAs(DateTime dateToCheck) {
     return day == dateToCheck.day && month == dateToCheck.month && year == dateToCheck.year;
+  }
+
+  String relateiveDate() {
+    final date = this;
+    return date.isToday
+        ? 'Today'
+        : date.isYesterday
+            ? 'Yesterday'
+            : Formatters.monthDayYear.format(date);
   }
 }
 

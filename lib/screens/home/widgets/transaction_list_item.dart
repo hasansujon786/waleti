@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../configs/configs.dart';
 import '../../../models/models.dart';
 import '../../../shared/ui/ui.dart';
-import '../../../shared/utils/formatter.dart';
+import '../../../extensions/date_time_extension.dart';
 
 class TransactionListItem extends StatelessWidget {
   final MyTransaction transaction;
@@ -23,7 +23,7 @@ class TransactionListItem extends StatelessWidget {
       horizontalTitleGap: 8,
       leading: leading(context),
       title: Text(transaction.category.name, style: TextStyle(color: Palette.text)),
-      subtitle: Text(Formatters.monthDayYear.format(transaction.createdAt), style: Theme.of(context).textTheme.caption),
+      subtitle: Text(transaction.createdAt.relateiveDate(), style: Theme.of(context).textTheme.caption),
       trailing: CurrencyText.small(transaction.amount, transaction.type),
     );
   }
@@ -34,7 +34,7 @@ class TransactionListItem extends StatelessWidget {
       width: 48,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        color: Colors.grey.shade100,
+        color: Colors.grey.shade50,
       ),
       child: Center(child: Icon(transaction.category.icon)),
     );

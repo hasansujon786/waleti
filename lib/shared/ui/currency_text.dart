@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../models/models.dart';
-import '../../configs/configs.dart';
 import '../../shared/utils/formatter.dart';
 
 class CurrencyText extends StatelessWidget {
@@ -47,12 +46,12 @@ class CurrencyText extends StatelessWidget {
   }
 
   Widget smallText(List<String> currency, {required MyTransactionDataType? type}) {
-    final smallStyle = TextStyle(fontSize: 10, color: Palette.textLight, fontWeight: FontWeight.w700);
+    const smallStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
     final typeColor = type == MyTransactionDataType.income ? Colors.green : Colors.red[300];
 
     return RichText(
       text: TextSpan(
-        style: TextStyle(color: Palette.text, fontWeight: FontWeight.w500, fontSize: 16),
+        style: TextStyle(color: typeColor, fontWeight: FontWeight.w500, fontSize: 16),
         children: [
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
@@ -61,8 +60,10 @@ class CurrencyText extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (type != null) Text('●', style: TextStyle(color: typeColor)),
-                    Text(' \$', style: smallStyle.copyWith(fontSize: 11)),
+                    type == MyTransactionDataType.income
+                        ? Icon(Icons.add, size: 14, color: typeColor)
+                        : Icon(Icons.remove, size: 14, color: typeColor),
+                    Text(' \$', style: smallStyle.copyWith(color: typeColor)),
                   ],
                 ),
                 const SizedBox(height: 2),
