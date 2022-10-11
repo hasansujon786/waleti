@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Palette {
   // #3077FC
-  static const primary = Colors.deepPurple;
+  static const primary = Colors.teal;
   static final muted = Colors.grey.shade300;
 
   static final textLighter = Colors.grey.shade500;

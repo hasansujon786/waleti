@@ -13,3 +13,4 @@ export 'line_chart.dart';
 export 'line_chart_wrapper.dart';
 export 'option_switch.dart';
 export 'popup_menu_item_data.dart';
+export 'simple_ui.dart';

@@ -9,7 +9,7 @@ class AppTheme {
     fontFamily: 'rubik',
     appBarTheme: const AppBarTheme(centerTitle: true),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedItemColor: Colors.orange,
+      selectedItemColor: Palette.primary,
       unselectedItemColor: Colors.grey.shade600,
       backgroundColor: Colors.white,
     ),
