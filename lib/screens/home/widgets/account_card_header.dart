@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:waleti/shared/ui/ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../providers/providers.dart';
+import '../../../shared/ui/ui.dart';
 
 class AccountCardHeader extends StatelessWidget {
   const AccountCardHeader({super.key, required this.bg});
@@ -8,12 +11,6 @@ class AccountCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final transactionsRef = ref.watch(filteredTransactionsByWeek);
-    // final transactionListFilter = ref.watch(transactionListFilterProvider.state);
-    // final totalExpence = ref.watch(totalExpenceOfSelectedWeek);
-    // final totalIncome = ref.watch(totalIncomeOfSelectedWeek);
-    // final currentWeekDates = ref.watch(weekViewControllerProvider);
-
     return FlexibleSpaceBar(
       background: Stack(
         children: [
@@ -84,14 +81,17 @@ class AccountCardHeader extends StatelessWidget {
   }
 }
 
-class _Card extends StatelessWidget {
+class _Card extends ConsumerWidget {
   const _Card({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final tt = Theme.of(context).textTheme;
+    final totalIncome = ref.watch(totalIncomeOfSelectedWeek);
+    final totalExpence = ref.watch(totalExpenceOfSelectedWeek);
+
     return AspectRatio(
       aspectRatio: 5 / 3,
       child: Container(
@@ -117,8 +117,8 @@ class _Card extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                userAmount(context, false, 23434.2),
-                userAmount(context, true, 23434.2),
+                userAmount(context, false, totalIncome.value ?? 0),
+                userAmount(context, true, totalExpence.value ?? 0),
               ],
             ),
           ],

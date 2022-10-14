@@ -11,7 +11,7 @@ class HomeDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final transactionsRef = ref.watch(filteredTransactionsByWeek);
+    final transactionsRef = ref.watch(allTransactionsFromSelectedWeek);
     final transactionListFilter = ref.watch(transactionListFilterProvider.state);
     final totalExpence = ref.watch(totalExpenceOfSelectedWeek);
     final totalIncome = ref.watch(totalIncomeOfSelectedWeek);

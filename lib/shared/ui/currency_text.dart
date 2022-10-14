@@ -61,10 +61,11 @@ class CurrencyText extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     type == MyTransactionDataType.income
-                        ? Icon(Icons.add, size: 14, color: typeColor)
-                        : Icon(Icons.remove, size: 14, color: typeColor),
-                    Text('\$', style: smallStyle.copyWith(color: typeColor)),
+                        ? Icon(Icons.add, size: 10, color: typeColor)
+                        : Icon(Icons.remove, size: 10, color: typeColor),
                     const SizedBox(width: 1),
+                    Text('\$', style: smallStyle.copyWith(color: typeColor)),
+                    const SizedBox(width: 0.5),
                   ],
                 ),
                 const SizedBox(height: 2),

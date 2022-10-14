@@ -23,11 +23,11 @@ class TransactionList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return ref.watch(transactionsFromCurrentSelectedDayProvider).when(
-          data: (curDayTransactions) {
+    return ref.watch(allTransactionsFromSelectedWeek).when(
+          data: (transactions) {
             return isTransactionsView
-                ? transactionViewbuilder(curDayTransactions, ref)
-                : categoryViewBuilder(curDayTransactions, ref);
+                ? transactionViewbuilder(transactions, ref)
+                : categoryViewBuilder(transactions, ref);
           },
           error: (e, _) => buildSliverBoxCenter(const Text('error')),
           loading: () => buildSliverBoxCenter(const Text('Loading...')),

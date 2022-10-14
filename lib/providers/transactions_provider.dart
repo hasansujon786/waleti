@@ -1,19 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controllers/controllers.dart';
-import '../extensions/date_time_extension.dart';
 import '../models/models.dart';
-import 'providers.dart';
 
-final currentSelectedDayProvider = StateProvider<DateTime>((_) => DateTime.now());
 final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) => TransactionListFilter.all);
-
-final transactionsFromCurrentSelectedDayProvider = Provider<AsyncTransactionsRef>((ref) {
-  final selectedDay = ref.watch(currentSelectedDayProvider);
-  return ref
-      .watch(filteredTransactionsByWeek)
-      .whenData((value) => value.where((item) => item.createdAt.isSameDayAs(selectedDay)).toList());
-});
 
 final allIncomeTransactionsProvider = Provider<AsyncTransactionsRef>(
   (ref) => _filterByType(ref, MyTransactionDataType.income),
