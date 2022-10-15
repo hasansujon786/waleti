@@ -46,8 +46,8 @@ class CurrencyText extends StatelessWidget {
   }
 
   Widget smallText(List<String> currency, {required MyTransactionDataType? type}) {
-    const smallStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
     final typeColor = type == MyTransactionDataType.income ? Colors.green : Colors.red[300];
+    final smallStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: typeColor);
 
     return RichText(
       text: TextSpan(
@@ -55,21 +55,15 @@ class CurrencyText extends StatelessWidget {
         children: [
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    type == MyTransactionDataType.income
-                        ? Icon(Icons.add, size: 10, color: typeColor)
-                        : Icon(Icons.remove, size: 10, color: typeColor),
-                    const SizedBox(width: 1),
-                    Text('\$', style: smallStyle.copyWith(color: typeColor)),
-                    const SizedBox(width: 0.5),
-                  ],
-                ),
-                const SizedBox(height: 2),
-              ],
+            child: type == MyTransactionDataType.income
+                ? Icon(Icons.add, size: 10, color: typeColor)
+                : Icon(Icons.remove, size: 10, color: typeColor),
+          ),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 1),
+              child: Text('\$', style: smallStyle.copyWith(fontSize: 12)),
             ),
           ),
           TextSpan(text: currency[0]),

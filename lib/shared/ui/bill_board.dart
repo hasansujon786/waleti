@@ -58,14 +58,14 @@ class BillBoard extends ConsumerWidget {
     );
   }
 
-  RichText curBalanceTitle(TextTheme textTheme, isExpanse) {
-    final color = isExpanse ? Colors.red.shade300 : Colors.green.shade500;
+  RichText curBalanceTitle(TextTheme textTheme, isExpense) {
+    final color = isExpense ? Colors.red.shade300 : Colors.green.shade500;
     return RichText(
       text: TextSpan(
         style: textTheme.labelSmall?.copyWith(color: color),
         children: [
           TextSpan(text: '●', style: TextStyle(fontSize: 14, height: 0.5, color: color.withOpacity(0.8))),
-          TextSpan(text: ' Total ${isExpanse ? "Expanse" : "Income"}'),
+          TextSpan(text: ' Total ${isExpense ? "Expense" : "Income"}'),
         ],
       ),
     );

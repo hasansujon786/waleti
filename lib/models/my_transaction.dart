@@ -8,7 +8,7 @@ import 'transaction_category.dart';
 
 part 'my_transaction.g.dart';
 
-enum MyTransactionDataType { expanse, income }
+enum MyTransactionDataType { expense, income }
 
 var _uuid = const Uuid();
 
@@ -20,7 +20,7 @@ class MyTransaction extends HiveObject {
     TransactionCategory? category,
     DateTime? createdAt,
     String? id,
-    MyTransactionDataType type = MyTransactionDataType.expanse,
+    MyTransactionDataType type = MyTransactionDataType.expense,
   })  : createdAt = createdAt ?? DateTime.now(),
         id = id ?? _uuid.v4(),
         _category = category?.name,
@@ -41,15 +41,15 @@ class MyTransaction extends HiveObject {
 
   // enum MyTransactionDataType
   set type(MyTransactionDataType value) => _type = value.name;
-  MyTransactionDataType get type => _type == 'expanse' ? MyTransactionDataType.expanse : MyTransactionDataType.income;
-  bool get isTypeExpanse => type == MyTransactionDataType.expanse;
+  MyTransactionDataType get type => _type == 'expense' ? MyTransactionDataType.expense : MyTransactionDataType.income;
+  bool get isTypeExpense => type == MyTransactionDataType.expense;
   bool get isTypeIncome => type == MyTransactionDataType.income;
 
   // TransactionCategory
   set category(TransactionCategory? ct) => _category = ct?.name;
   TransactionCategory get category {
     if (_category == null) {
-      final defaultIcon = type == MyTransactionDataType.expanse ? Icons.trending_down : Icons.trending_up;
+      final defaultIcon = type == MyTransactionDataType.expense ? Icons.trending_down : Icons.trending_up;
       return TransactionCategory('Not listed', defaultIcon);
     }
     return transactionCategories.firstWhere((cg) => cg.name == _category);
@@ -80,62 +80,62 @@ class MyTransaction extends HiveObject {
 
 final List<MyTransaction> myDemoTransactions = [
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 70.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 20.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 170.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 120.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 40.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 10.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 5.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 90.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 100.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 70.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 70.0,
     createdAt: DateTime.now(),
   ),
   MyTransaction(
-    type: MyTransactionDataType.expanse,
+    type: MyTransactionDataType.expense,
     amount: 50.0,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),

@@ -36,10 +36,7 @@ class TransactionListHeader extends ConsumerWidget {
               ),
               child: Row(
                 children: <Widget>[
-                  Text(
-                    isTransactionsView ? 'Transactions' : 'Category',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
+                  Text('Transactions History', style: Theme.of(context).textTheme.subtitle2),
                   const Spacer(),
                   CircularButton(
                     icon: Icon(isTransactionsView ? Icons.list_alt : Icons.list),

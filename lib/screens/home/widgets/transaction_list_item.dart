@@ -34,9 +34,16 @@ class TransactionListItem extends StatelessWidget {
       width: 48,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        color: Colors.grey.shade50,
+        // color: Palette.primary.withOpacity(0.07),
+        color: Colors.grey.shade100,
       ),
-      child: Center(child: Icon(transaction.category.icon)),
+      child: Center(
+        child: Icon(
+          transaction.category.icon,
+          color: Colors.grey.shade700,
+          size: 28,
+        ),
+      ),
     );
   }
 }

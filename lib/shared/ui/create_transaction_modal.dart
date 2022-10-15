@@ -27,7 +27,7 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
   final _descriptionTextConroller = TextEditingController(text: 'Title text');
   final _amountConroller = TextEditingController(text: '234');
   TransactionCategory? _transactionCategory;
-  var _transactionType = MyTransactionDataType.expanse;
+  var _transactionType = MyTransactionDataType.expense;
   DateTime _choosenDate = DateTime.now();
 
   void _onSubmitData() {
@@ -65,12 +65,12 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      heightFactor: 0.7,
-      child: Container(
+      heightFactor: 0.95,
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
-            const Text('Create New Transaction', style: TextStyle(fontSize: 22)),
+            const Text('Add Expense', style: TextStyle(fontSize: 22)),
             const SizedBox(height: 12),
             TextField(
               decoration: const InputDecoration(
@@ -96,8 +96,8 @@ class _CreateTransactionModalState extends State<CreateTransactionModal> {
             OptionSwitch<MyTransactionDataType>(
               value: _transactionType,
               onSelect: (newValue) => setState(() => _transactionType = newValue),
-              optionNames: const [Text('Expanse'), Text('Income')],
-              options: const [MyTransactionDataType.expanse, MyTransactionDataType.income],
+              optionNames: const [Text('Expense'), Text('Income')],
+              options: const [MyTransactionDataType.expense, MyTransactionDataType.income],
             ),
             const SizedBox(height: 28),
             submitButton(),

@@ -127,21 +127,21 @@ class _Card extends ConsumerWidget {
     );
   }
 
-  Widget userAmount(BuildContext context, bool isExpanse, double amout) {
+  Widget userAmount(BuildContext context, bool isExpense, double amout) {
     final tt = Theme.of(context).textTheme;
     return Column(
-      crossAxisAlignment: isExpanse ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: isExpense ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Row(children: [
           IconBox(
             icon: Icon(
-              isExpanse ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
+              isExpense ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
               color: Colors.white,
               size: 18,
             ),
           ),
           const SizedBox(width: 6),
-          Text(isExpanse ? 'Expence' : 'Income', style: tt.titleSmall?.copyWith(color: Colors.grey.shade200)),
+          Text(isExpense ? 'Expence' : 'Income', style: tt.titleSmall?.copyWith(color: Colors.grey.shade200)),
         ]),
         const SizedBox(height: 10),
         Text('\$$amout', style: tt.titleLarge?.copyWith(color: Colors.grey.shade100)),

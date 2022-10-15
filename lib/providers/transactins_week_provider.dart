@@ -11,9 +11,9 @@ final allTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
       .watch(transactionListControllerProvider)
       .whenData((items) => _filterByWeek(items, ref.watch(weekViewControllerProvider))),
 );
-final allExpanseTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
+final allExpenseTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
   (ref) => ref
-      .watch(allExpanseTransactionsProvider)
+      .watch(allExpenseTransactionsProvider)
       .whenData((items) => _filterByWeek(items, ref.watch(weekViewControllerProvider))),
 );
 final allIncomeTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
@@ -24,7 +24,7 @@ final allIncomeTransactionsFromSelectedWeek = Provider<AsyncTransactionsRef>(
 
 // total transaction amount filtered by week
 final totalExpenceOfSelectedWeek = Provider<AsyncValue<double>>(
-  (ref) => ref.watch(allExpanseTransactionsFromSelectedWeek).whenData(_calculateTotalAmount),
+  (ref) => ref.watch(allExpenseTransactionsFromSelectedWeek).whenData(_calculateTotalAmount),
 );
 final totalIncomeOfSelectedWeek = Provider<AsyncValue<double>>(
   (ref) => ref.watch(allIncomeTransactionsFromSelectedWeek).whenData(_calculateTotalAmount),
@@ -53,8 +53,8 @@ List<MyTransaction> _filterByWeek(List<MyTransaction> value, List<DateTime> curr
 // final filteredTransactionsByWeek = Provider<AsyncTransactionsRef>((ref) {
 //   final filterState = ref.watch(transactionListFilterProvider);
 //   switch (filterState) {
-//     case TransactionListFilter.expanse:
-//       return ref.watch(expanseTransactionsFromSelectedWeek);
+//     case TransactionListFilter.expense:
+//       return ref.watch(expenseTransactionsFromSelectedWeek);
 //     case TransactionListFilter.income:
 //       return ref.watch(incomeTransactionsFromSelectedWeek);
 //     case TransactionListFilter.all:

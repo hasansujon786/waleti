@@ -8,8 +8,8 @@ final transactionListFilterProvider = StateProvider<TransactionListFilter>((_) =
 final allIncomeTransactionsProvider = Provider<AsyncTransactionsRef>(
   (ref) => _filterByType(ref, MyTransactionDataType.income),
 );
-final allExpanseTransactionsProvider = Provider<AsyncTransactionsRef>(
-  (ref) => _filterByType(ref, MyTransactionDataType.expanse),
+final allExpenseTransactionsProvider = Provider<AsyncTransactionsRef>(
+  (ref) => _filterByType(ref, MyTransactionDataType.expense),
 );
 
 AsyncTransactionsRef _filterByType(ProviderRef<AsyncTransactionsRef> ref, MyTransactionDataType filterBy) {
@@ -20,4 +20,4 @@ AsyncTransactionsRef _filterByType(ProviderRef<AsyncTransactionsRef> ref, MyTran
   });
 }
 
-enum TransactionListFilter { all, expanse, income }
+enum TransactionListFilter { all, expense, income }

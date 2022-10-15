@@ -37,8 +37,8 @@ class HomeDashboard extends ConsumerWidget {
               //   child: OptionSwitch<TransactionListFilter>(
               //     value: transactionListFilter.state,
               //     onSelect: (selected) => transactionListFilter.state = selected,
-              //     optionNames: [option('Expanse', totalExpence), option('Income', totalIncome)],
-              //     options: const [TransactionListFilter.expanse, TransactionListFilter.income],
+              //     optionNames: [option('Expense', totalExpence), option('Income', totalIncome)],
+              //     options: const [TransactionListFilter.expense, TransactionListFilter.income],
               //   ),
               // ),
             ],
